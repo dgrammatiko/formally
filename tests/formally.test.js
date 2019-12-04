@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect, assert } from 'chai';
 import sinon from 'sinon';
 
-import { FormValidatorBase } from '../src/base/formvalidatorbase';
+import { FormValidatorBase } from '../src/formvalidatorbase';
 
 describe('Basic', () => {
   it('should throw on wrong element', () => {
