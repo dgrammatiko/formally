@@ -1,0 +1,50 @@
+/* latohairline - latin */
+// @font-face {
+//   font-family: 'latohairline';
+//   font-style: normal;
+//   font-weight: 700;
+//   font-display: swap;
+//   src: local('Lato Hairline'), local('Lato-Hairline'),
+//     url('lato.woff2') format('woff2'),
+//          url('lato.woff') format('woff');
+// }
+
+body {
+  // Strip the unit off the size ratio to generate a line height
+  $line-height: get-size(600);
+  line-height: $line-height / ($line-height * 0 + 1);
+
+  @include apply-utility('font', 'base');
+}
+
+// h1,
+// h2,
+// h3 {
+//   @include apply-utility('font', 'serif');
+// }
+
+h1 {
+  font-size: get-size(700);
+}
+
+h2 {
+  font-size: get-size(600);
+}
+
+h3 {
+  font-size: get-size(500);
+}
+
+@include media-query('md') {
+  h1 {
+    font-size: get-size(900);
+  }
+
+  h2 {
+    font-size: get-size(800);
+  }
+
+  h3 {
+    font-size: get-size(700);
+  }
+}
