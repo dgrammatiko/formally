@@ -40,7 +40,6 @@
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-gzip": "2.2.0",
-    "rollup-plugin-terser": "5.1.2",
-    "script-launcher": "1.22.9"
+    "rollup-plugin-terser": "5.1.2"
   }
 }
