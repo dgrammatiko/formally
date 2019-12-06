@@ -1,5 +1,5 @@
 {
-  "name": "formally",
+  "name": "@dgrammatiko/formally",
   "version": "0.0.1",
   "description": "Form validation leveraging the platform",
   "main": "src/index.js",
