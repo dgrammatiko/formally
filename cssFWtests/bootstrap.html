@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <style>
+    body {
+      padding: 4rem
+    }
+  </style>
+</head>
+
+<body>
+  <section class=wrapper>
+    <form data-valid-class="is-valid" data-invalid-class="is-invalid" data-indicator="true"
+      data-indicator-position="after" data-indicator-class="invalid-feedback" data-attach-change="true"
+      data-attach-input="true">
+
+      <div class="mb-3">
+        <label for="text">Text input</label>
+        <input type="text" class="form-control" id="text" placeholder="Required example textarea" pattern="^[a-z]+$"
+          data-value-missing="This needs to be filled" data-pattern-mismatch="Only lowercase letters here"
+          data-too-long="Not bigger than 10 letters" data-too-short="Not smaller than 5 letters" minlength="5"
+          maxlength="10" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="validationTextarea">Textarea</label>
+        <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea"
+          required></textarea>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="gridCheck">
+          <label class="form-check-label" for="gridCheck">
+            Check me out
+          </label>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <select class="form-control custom-select" required>
+          <option value="">Open this select menu</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
+
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+      </div>
+
+
+      <div class="form-group">
+        <button type=submit class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </section>
+  <section>
+    <form class="needs-validation">
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+          <label for="validationTooltip01">First name</label>
+          <input type="text" class="form-control" id="validationTooltip01" value="Mark">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="validationTooltip02">Last name</label>
+          <input type="text" class="form-control" id="validationTooltip02" value="Otto" required>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="validationTooltipUsername">Username</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+            </div>
+            <input type="text" class="form-control" id="validationTooltipUsername"
+              aria-describedby="validationTooltipUsernamePrepend" required>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-6 mb-3">
+          <label for="validationTooltip03">City</label>
+          <input type="text" class="form-control" id="validationTooltip03" required>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="validationTooltip04">State</label>
+          <select class="custom-select" id="validationTooltip04" required>
+            <option selected value="">Choose...</option>
+            <option>...</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="validationTooltip05">Zip</label>
+          <input type="text" class="form-control" id="validationTooltip05" required>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Submit form</button>
+    </form>
+  </section>
+  <script src="nocode.iffe.es5.min.js"></script>
+
+  <script>
+    document.querySelector('button').addEventListener('click', (e) => {
+      // e.preventDefault();
+      if (!e.target.form.Formally.isValid()) {
+        alert('You shall not pass!')
+        e.preventDefault();
+      } else {
+        alert('Yas master')
+
+      }
+    })
+
+    document.querySelectorAll('button')[1].addEventListener('click', (e) => {
+      // e.preventDefault();
+      if (!e.target.form.Formally.isValid()) {
+        e.preventDefault();
+        alert('You shall not pass!')
+
+      } else {
+        alert('Yas master')
+
+      }
+    })</script>
+</body>
+
+</html>

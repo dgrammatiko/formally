@@ -1,0 +1,46 @@
+{
+  "name": "formally",
+  "version": "0.0.1",
+  "description": "Form validation leveraging the platform",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "npx rollup -c build/rollup.config.iife.es5.min.js && npx rollup -c build/rollup.config.iife.es6.min.js && npx rollup -c build/rollup.config.esm.min.js && npx rollup -c build/rollup.config.nocode.iife.es5.min.js && npx rollup -c build/rollup.config.nocode.iife.es6.min.js && npx rollup -c build/rollup.config.nocode.esm.min.js",
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgrammatiko/formally.git"
+  },
+  "keywords": [
+    "form",
+    "validation",
+    "bootstrap",
+    "foundation",
+    "uikit",
+    "bulma",
+    "vanilla",
+    "javascript"
+  ],
+  "author": "Dimitrios Grammatikogiannis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dgrammatiko/formally/issues"
+  },
+  "homepage": "https://github.com/dgrammatiko/formally#readme",
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/runtime-corejs2": "^7.7.4",
+    "@rollup/plugin-node-resolve": "^6.0.0",
+    "babel-preset-env": "^1.7.0",
+    "brotli": "^1.3.2",
+    "node-zopfli": "^2.1.3",
+    "rollup": "^1.27.8",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-gzip": "^2.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "script-launcher": "^1.22.9"
+  }
+}
