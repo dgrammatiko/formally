@@ -2,4 +2,4 @@
 
 ![Formally logo](formally.svg)
 
-https://github.com/{dgrammatiko}/{formally}/workflows/Nodew%20CI/badge.svg
+https://img.shields.io/github/workflow/status/dgrammatiko/formally/Node CI?style=for-the-badge
