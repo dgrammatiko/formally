@@ -2,4 +2,4 @@
 
 ![Formally logo](formally.svg)
 
-https://img.shields.io/github/workflow/status/dgrammatiko/formally/Node CI?style=for-the-badge
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dgrammatiko/formally/Node CI?style=for-the-badge)
