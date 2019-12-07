@@ -1,8 +1,8 @@
 import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import { expect, assert } from 'chai';
+import sinon from 'sinon';
 
 import { FormValidatorBase } from '../src/base/formvalidatorbase';
-import { doesNotReject } from 'assert';
 
 describe('Basic', () => {
   it('should throw on wrong element', () => {
@@ -27,7 +27,13 @@ describe('Basic', () => {
       }
     };
 
+    const stub = sinon.stub(FormValidatorBase.prototype, 'init').callsFake(() => true);
+
     expect(function () { new FormValidatorBase(form); }).to.not.throw(Error);
+    // We didn't call the init function
+    assert(stub, false);
+
+    stub.restore();
   });
 
   it('should work on form element with validate attribute', () => {
@@ -43,6 +49,12 @@ describe('Basic', () => {
       elements: []
     };
 
+    const stub = sinon.stub(FormValidatorBase.prototype, 'init').callsFake(() => true);
+
     expect(function () { new FormValidatorBase(form); }).to.not.throw(Error);
+    // We called the init function
+    assert(stub, true);
+
+    stub.restore();
   });
 });
