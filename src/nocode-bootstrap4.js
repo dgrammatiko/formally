@@ -1,8 +1,11 @@
-import Formally from './index';
+import { Formally } from './bootstrap4';
 
 const formsWithValidateClass = Array.from(document.querySelectorAll('form:not([novalidate]'));
 
-export const def = () => {
+// Global scope
+window.Formally = Formally;
+
+const def = () => {
   formsWithValidateClass.forEach(form => {
     new Formally(form);
   });
@@ -10,4 +13,4 @@ export const def = () => {
 
 def();
 
-// That's all
+export { Formally }

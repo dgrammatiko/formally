@@ -1,8 +1,6 @@
-# Formally
+# Formally {docsify-ignore-all}
 
-![Formally logo](formally.svg)
-
-# formally
+# formally 
 adverb
 - in accordance with convention or etiquette.
 - officially

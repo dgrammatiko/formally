@@ -1,6 +1,4 @@
 export const defaults = {
-  instanceName: 'Formally',
-  customValidatorName: 'FormallyCustomValidator',
   validClass: 'is-valid',
   invalidClass: 'is-invalid',
   indicator: true,
