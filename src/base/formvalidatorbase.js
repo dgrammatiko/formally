@@ -18,7 +18,7 @@ class FormValidatorBase {
 
     if (this.form.dataset) {
       for (const data in this.form.dataset) {
-        if (this.options.hasOwnProperty(data)) {
+        if (Object.prototype.hasOwnProperty.call(this.options, data)) {
           if (data === 'indicator' || data === 'attachChange' || data === 'attachInput') {
             this.options[data] = (this.form.dataset[data] === 'true');
           } else {
@@ -57,7 +57,7 @@ class FormValidatorBase {
         return data[type + 'Mismatch'];
       } else {
         for (var invalidKey in data) {
-          if (data.hasOwnProperty(invalidKey) && validity[invalidKey]) {
+          if (Object.prototype.hasOwnProperty.call(data, invalidKey) && validity[invalidKey]) {
             return data[invalidKey];
           }
         }
