@@ -1,9 +1,10 @@
+/* eslint no-undef: 0 */
 import { FormValidatorBase } from './base/formvalidatorbase';
-import { guid } from './base/utils'
+import { guid } from './base/utils';
 
 class Formally extends FormValidatorBase {
   constructor(form) {
-    super(form)
+    super(form);
 
     // We could override the default options here
     // this.options = {
@@ -32,10 +33,10 @@ class Formally extends FormValidatorBase {
     span.classList.add(this.options.indicatorClass);
 
     if (this.options.indicatorPosition === 'after') {
-      formElement.insertAdjacentElement('afterend', span)
-      formElement.parentNode.appendChild(span)
+      formElement.insertAdjacentElement('afterend', span);
+      formElement.parentNode.appendChild(span);
     } else if (this.options.indicatorPosition === 'before') {
-      formElement.insertAdjacentElement('beforebegin', span)
+      formElement.insertAdjacentElement('beforebegin', span);
     }
   }
 

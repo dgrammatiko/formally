@@ -1,3 +1,4 @@
+/* eslint no-undef: 0 */
 import { Formally } from './bootstrap4';
 
 const formsWithValidateClass = Array.from(document.querySelectorAll('form:not([novalidate]'));
@@ -13,4 +14,4 @@ const def = () => {
 
 def();
 
-export { Formally }
+export { Formally };

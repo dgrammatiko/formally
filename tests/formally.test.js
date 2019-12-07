@@ -1,9 +1,10 @@
 import { describe, it } from 'mocha';
-import { expect } from 'chai'
-import sinon from 'sinon';
-import { FormValidatorBase } from '../src/base/formvalidatorbase';
+import { expect } from 'chai';
 
-describe('Initialise on form element', () => {
+import { FormValidatorBase } from '../src/base/formvalidatorbase';
+import { doesNotReject } from 'assert';
+
+describe('Basic', () => {
   it('should throw on wrong element', () => {
     // Mock the form Element
     const form = {
@@ -15,7 +16,7 @@ describe('Initialise on form element', () => {
     expect(function () { new FormValidatorBase(form); }).to.throw(Error);
   });
 
-  it('should work on form elements with novalidate attribute', () => {
+  it('should work on form element with novalidate attribute', () => {
     // Mock the form Element
     const form = {
       constructor: {
@@ -29,7 +30,7 @@ describe('Initialise on form element', () => {
     expect(function () { new FormValidatorBase(form); }).to.not.throw(Error);
   });
 
-  it('should work on form elements with validate attribute', () => {
+  it('should work on form element with validate attribute', () => {
     // Mock the form Element
     const form = {
       constructor: {

@@ -1,5 +1,5 @@
-import { uaSupportsPassive } from './utils'
-import { defaults } from './defaults'
+import { uaSupportsPassive } from './utils';
+import { defaults } from './defaults';
 
 class FormValidatorBase {
   constructor(form) {
@@ -43,7 +43,7 @@ class FormValidatorBase {
     // Custom validators are set through formElement.FormallyCustomValidator
     const formElement = event.target;
     if (formElement.FormallyCustomValidator && typeof formElement.FormallyCustomValidator === 'function') {
-      formElement.customValidator()
+      formElement.customValidator();
     } else {
       formElement.checkValidity();
     }
@@ -63,7 +63,7 @@ class FormValidatorBase {
         }
       }
     }
-    return undefined;
+    return '';
   }
 
   switchClasses(formElement, isValid) {
@@ -76,11 +76,11 @@ class FormValidatorBase {
     }
   }
 
-  notify(formElement) {
+  notify() {
     return;
   }
 
-  elementInit(formElement) {
+  elementInit() {
     return;
   }
 
@@ -93,7 +93,7 @@ class FormValidatorBase {
         formElement.classList.remove(this.options.validClass);
         formElement.classList.add(this.options.validClass);
       }
-      this.notify(formElement)
+      this.notify(formElement);
     });
 
     if (this.form.checkValidity()) {
@@ -107,7 +107,7 @@ class FormValidatorBase {
     [].slice.call(this.form.elements).forEach((formElement) => {
       const type = formElement.tagName;
       if (type && (type === 'INPUT' || type === 'SELECT' || type === 'TEXTAREA')) {
-        this.elementsForValidation.push(formElement)
+        this.elementsForValidation.push(formElement);
         formElement.addEventListener('blur', this.formElementValidate), this.passiveSupported ? { passive: true } : false;
 
         if (this.options.attachChange || this.form.dataset.attachChange) {
