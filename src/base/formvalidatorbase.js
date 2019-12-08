@@ -42,7 +42,6 @@ class FormValidatorBase {
   }
 
   formElementValidate(event) {
-    debugger;
     const formElement = event.target;
     // Custom validators are set through formElement.FormallyCustomValidator
     if (formElement.FormallyCustomValidator && typeof formElement.FormallyCustomValidator === 'function') {
