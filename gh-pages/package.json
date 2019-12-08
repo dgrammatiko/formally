@@ -35,7 +35,7 @@
     "cms:bundle": "rollup --config",
     "start": "concurrently \"npm run sass:process -- --watch\" \"npm run cms:bundle -- --watch\" \"chokidar \\\"src/_includes/**\\\" -c \\\"npm run cms:precompile\\\"\" \"npm run serve\"",
     "serve": "cross-env ELEVENTY_ENV=development npx eleventy --serve",
-    "production": "npx json-to-scss src/_data/tokens.json src/scss/_tokens.scss && npm run sass:tokens && sass src/scss/global.scss src/_includes/assets/css/global.css --style=compressed && npx rollup --config && npx eleventy"
+    "production": "npx json-to-scss src/_data/tokens.json src/scss/_tokens.scss && npm run sass:tokens && sass src/scss/global.scss src/_includes/assets/css/global.css --style=compressed && npx rollup --config ./rollup.config.js && npx eleventy"
   },
   "repository": {
     "type": "git",
