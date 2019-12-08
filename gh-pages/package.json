@@ -17,16 +17,16 @@
     "stalfos": "github:hankchizljaw/stalfos#ad9e3e087c101367d2e2b2adc0708173cf88f840"
   },
   "devDependencies": {
-    "@erquhart/rollup-plugin-node-builtins": "^2.1.5",
-    "bl": "^3.0.0",
-    "chokidar-cli": "^2.0.0",
-    "cross-env": "^5.2.0",
-    "make-dir-cli": "^2.0.0",
-    "prettier": "^1.18.2",
-    "rollup": "^1.16.1",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.0.3"
+    "@erquhart/rollup-plugin-node-builtins": "2.1.5",
+    "bl": "3.0.0",
+    "chokidar-cli": "2.0.0",
+    "cross-env": "5.2.0",
+    "make-dir-cli": "2.0.0",
+    "prettier": "1.18.2",
+    "rollup": "1.16.1",
+    "rollup-plugin-commonjs": "10.0.0",
+    "rollup-plugin-json": "4.0.0",
+    "rollup-plugin-node-resolve": "5.0.3"
   },
   "scripts": {
     "sass:tokens": "npx json-to-scss src/_data/tokens.json src/scss/_tokens.scss",
