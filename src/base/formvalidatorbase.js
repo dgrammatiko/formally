@@ -1,4 +1,4 @@
-import { uaSupportsPassive } from './utils';
+import { debounce, uaSupportsPassive } from './utils';
 import { defaults } from './defaults';
 
 class FormValidatorBase {
@@ -33,6 +33,8 @@ class FormValidatorBase {
     this.formElementValidate = this.formElementValidate.bind(this);
     this.reAttachElement = this.reAttachElement.bind(this);
 
+    this.debounced = debounce(99, this.formElementValidate);
+
     this.init();
 
     // The class instance is accesible at: form.Formally
@@ -40,8 +42,8 @@ class FormValidatorBase {
   }
 
   formElementValidate(event) {
-    // Custom validators are set through formElement.FormallyCustomValidator
     const formElement = event.target;
+    // Custom validators are set through formElement.FormallyCustomValidator
     if (formElement.FormallyCustomValidator && typeof formElement.FormallyCustomValidator === 'function') {
       formElement.customValidator();
     } else {
@@ -108,15 +110,15 @@ class FormValidatorBase {
       const type = formElement.tagName;
       if (type && (type === 'INPUT' || type === 'SELECT' || type === 'TEXTAREA')) {
         this.elementsForValidation.push(formElement);
-        formElement.addEventListener('blur', this.formElementValidate), this.passiveSupported ? { passive: true } : false;
+        formElement.addEventListener('blur', this.debounced), this.passiveSupported ? { passive: true } : false;
 
-        if (this.options.attachChange || this.form.dataset.attachChange) {
-          formElement.addEventListener('change', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
-        }
+        // if (this.options.attachChange || this.form.dataset.attachChange) {
+        formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
+        // }
 
-        if (this.options.attachInput || this.form.dataset.attachInput) {
-          formElement.addEventListener('change', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
-        }
+        // if (this.options.attachInput || this.form.dataset.attachInput) {
+        formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
+        // }
 
         if (this.options.indicator && (this.form.dataset && Object.keys(this.form.dataset).length !== 0)) {
           this.elementInit(formElement);
@@ -127,20 +129,20 @@ class FormValidatorBase {
 
   reAttachElement(formElement) {
     const type = formElement.tagName;
-    formElement.removeEventListener('blur', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
-    formElement.removeEventListener('change', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
-    formElement.removeEventListener('input', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
+    formElement.removeEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : false);
+    formElement.removeEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
+    formElement.removeEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : false);
 
     if (type && (type === 'INPUT' || type === 'SELECT' || type === 'TEXTAREA')) {
-      formElement.addEventListener('blur', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
+      formElement.addEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : false);
 
-      if (this.options.attachChange || this.form.dataset.attachChange) {
-        formElement.addEventListener('change', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
-      }
+      // if (this.options.attachChange || this.form.dataset.attachChange) {
+      formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
+      // }
 
-      if (this.options.attachInput || this.form.dataset.attachInput) {
-        formElement.addEventListener('input', this.formElementValidate, this.passiveSupported ? { passive: true } : false);
-      }
+      // if (this.options.attachInput || this.form.dataset.attachInput) {
+      formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : false);
+      // }
 
       if (this.options.indicator && (this.form.dataset && Object.keys(this.form.dataset).length !== 0)) {
         this.elementInit(formElement);

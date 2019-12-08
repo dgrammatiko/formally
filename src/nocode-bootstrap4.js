@@ -5,7 +5,6 @@ const formsWithValidateClass = Array.from(document.querySelectorAll('form:not([n
 
 // Global scope
 window.Formally = Formally;
-
 const def = () => {
   formsWithValidateClass.forEach(form => {
     new Formally(form);
