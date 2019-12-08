@@ -4,9 +4,9 @@ const nodeResolve = require('rollup-plugin-node-resolve');
 const json = require('rollup-plugin-json');
 
 export default {
-  input: 'src/admin/util',
+  input: 'docs/admin/util',
   output: {
-    file: 'dist/admin/util.js',
+    file: 'docs_public/admin/util.js',
     format: 'iife',
     name: 'previewUtil',
   },
