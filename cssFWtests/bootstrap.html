@@ -17,9 +17,9 @@
 
 <body>
   <section class=wrapper>
-    <form data-valid-class="is-valid" data-invalid-class="is-invalid" data-indicator="true"
-      data-indicator-position="after" data-indicator-class="invalid-feedback" data-attach-change="true"
-      data-attach-input="true">
+    <form data-valid-class="is-valid" data-invalid-class="is-invalid" data-invalid-form-alert="true"
+      data-indicator="true" data-indicator-position="after" data-indicator-class="invalid-feedback"
+      data-attach-change="true" data-attach-input="true">
 
       <div class="mb-3">
         <label for="text">Text input</label>
@@ -117,7 +117,7 @@
     document.querySelector('button').addEventListener('click', (e) => {
       // e.preventDefault();
       if (!e.target.form.Formally.isValid()) {
-        alert('You shall not pass!')
+        // alert('You shall not pass!')
         e.preventDefault();
       } else {
         alert('Yas master')

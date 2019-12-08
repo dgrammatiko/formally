@@ -19,7 +19,7 @@ class FormValidatorBase {
     if (this.form.dataset) {
       for (const data in this.form.dataset) {
         if (Object.prototype.hasOwnProperty.call(this.options, data)) {
-          if (data === 'indicator' || data === 'attachChange' || data === 'attachInput') {
+          if (data === 'indicator' || data === 'attachChange' || data === 'attachInput' || data === 'invalidFormAlert') {
             this.options[data] = (this.form.dataset[data] === 'true');
           } else {
             this.options[data] = this.form.dataset[data];
@@ -42,6 +42,7 @@ class FormValidatorBase {
   }
 
   formElementValidate(event) {
+    debugger;
     const formElement = event.target;
     // Custom validators are set through formElement.FormallyCustomValidator
     if (formElement.FormallyCustomValidator && typeof formElement.FormallyCustomValidator === 'function') {
@@ -78,12 +79,14 @@ class FormValidatorBase {
     }
   }
 
-  notify() {
-    return;
+  formInvalidNotification() {
+    return true;
   }
-
+  notify() {
+    return true;
+  }
   elementInit() {
-    return;
+    return true;
   }
 
   isValid() {
@@ -101,6 +104,7 @@ class FormValidatorBase {
     if (this.form.checkValidity()) {
       return true;
     } else {
+      this.formInvalidNotification();
       return false;
     }
   }
@@ -109,16 +113,17 @@ class FormValidatorBase {
     [].slice.call(this.form.elements).forEach((formElement) => {
       const type = formElement.tagName;
       if (type && (type === 'INPUT' || type === 'SELECT' || type === 'TEXTAREA')) {
+        if (formElement.hasAttribute('disabled') || !(formElement.dataset.allowValidation && (formElement.dataset.allowValidation === 'true'))) {
+          return;
+        }
         this.elementsForValidation.push(formElement);
         formElement.addEventListener('blur', this.debounced), this.passiveSupported ? { passive: true } : false;
 
-        // if (this.options.attachChange || this.form.dataset.attachChange) {
-        formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
-        // }
-
-        // if (this.options.attachInput || this.form.dataset.attachInput) {
-        formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
-        // }
+        if (type === 'SELECT') {
+          formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
+        } else {
+          formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : false);
+        }
 
         if (this.options.indicator && (this.form.dataset && Object.keys(this.form.dataset).length !== 0)) {
           this.elementInit(formElement);
@@ -136,13 +141,11 @@ class FormValidatorBase {
     if (type && (type === 'INPUT' || type === 'SELECT' || type === 'TEXTAREA')) {
       formElement.addEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : false);
 
-      // if (this.options.attachChange || this.form.dataset.attachChange) {
-      formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
-      // }
-
-      // if (this.options.attachInput || this.form.dataset.attachInput) {
-      formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : false);
-      // }
+      if (type === 'SELECT') {
+        formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : false);
+      } else {
+        formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : false);
+      }
 
       if (this.options.indicator && (this.form.dataset && Object.keys(this.form.dataset).length !== 0)) {
         this.elementInit(formElement);

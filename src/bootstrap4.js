@@ -11,6 +11,8 @@ class Formally extends FormValidatorBase {
     //   validClass: 'is-valid',
     //   invalidClass: 'is-invalid',
     //   indicator: true,
+    //   invalidForm: 'Text for invalid form',
+    //   invalidFormAlert: true,
     //   indicatorElement: 'div',
     //   indicatorPosition: 'after',
     //   indicatorClass: 'invalid-feedback',
@@ -21,6 +23,10 @@ class Formally extends FormValidatorBase {
 
   // This method creates the required element for the notification
   elementInit(formElement) {
+    if (formElement.hasAttribute('disabled')) {
+      return;
+    }
+
     let span = formElement.closest('span');
     if (!span) {
       span = document.createElement(this.options.indicatorElement);
@@ -42,6 +48,10 @@ class Formally extends FormValidatorBase {
 
   // This method updates the notification element text
   notify(formElement) {
+    if (formElement.hasAttribute('disabled')) {
+      return;
+    }
+
     const isValid = formElement.validity.valid;
     const type = formElement.getAttribute('type');
     const message = isValid ? null : this.getCustomMessage(formElement, formElement.type, formElement.validity);
@@ -73,6 +83,12 @@ class Formally extends FormValidatorBase {
           ariaMessage.innerText = message;
         }
       }
+    }
+  }
+
+  formInvalidNotification() {
+    if (this.form.dataset.invalidFormAlert && window.Joomla && typeof window.Joomla.renderMessages === 'function') {
+      window.Joomla.renderMessages({ 'Error': [this.form.dataset.invalidForm ? this.form.dataset.invalidForm : 'Please correct the invalid iputs'] });
     }
   }
 }
