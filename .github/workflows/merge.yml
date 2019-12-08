@@ -19,6 +19,6 @@ jobs:
         run: cd gh-pages && npm ci && npm run production
       - name: Deploy to GitHub Pages
         if: success() && github.ref == 'refs/heads/master'
-        run: cd .. && node ./build/deploy.js
+        run: pwd && cd .. && node ./build/deploy.js
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
