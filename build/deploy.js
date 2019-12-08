@@ -3,7 +3,7 @@ const ghpages = require('gh-pages');
 const token = process.env.GH_TOKEN;
 
 ghpages.publish(
-  'gh-pages/dist',
+  'docs/dist',
   {
     repo: `https://${token}@github.com/dgrammatiko/dgrammatiko.online.git`,
     // silent: true,
