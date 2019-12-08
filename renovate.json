@@ -6,6 +6,6 @@
 	"major": {
 		"automerge": false
 	},
-	"automergeType": "pr-comment",
-	"automergeComment": "bors: r+"
+	"automergeType": "pr",
+	"automergeComment": "Automated upd"
 }
