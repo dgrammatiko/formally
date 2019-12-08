@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "build": "npx rollup -c build/rollup.config.iife.es5.min.js && npx rollup -c build/rollup.config.iife.es6.min.js && npx rollup -c build/rollup.config.nocode.iife.es5.min.js && npx rollup -c build/rollup.config.nocode.iife.es6.min.js",
-    "test": "npx eslint src/. && npx mocha --require @babel/register --recursive --recursive tests"
+    "test": "npx eslint src/. && npx mocha --require @babel/register --recursive --recursive tests",
+    "deploy": "node ./build/deploy.js"
   },
   "repository": {
     "type": "git",
