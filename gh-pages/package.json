@@ -14,7 +14,7 @@
     "sass": "^1.21.0",
     "semver": "^6.3.0",
     "slugify": "^1.3.4",
-    "stalfos": "github:hankchizljaw/stalfos#c8971d22726326cfc04089b2da4d51eeb1ebb0eb"
+    "stalfos": "github:hankchizljaw/stalfos#ad9e3e087c101367d2e2b2adc0708173cf88f840"
   },
   "devDependencies": {
     "@erquhart/rollup-plugin-node-builtins": "^2.1.5",
