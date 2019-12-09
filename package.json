@@ -55,7 +55,7 @@
     "rollup-plugin-terser": "5.1.2",
     "sinon": "7.5.0",
     "@erquhart/rollup-plugin-node-builtins": "2.1.5",
-    "bl": "3.0.0",
+    "bl": "4.0.0",
     "chokidar-cli": "2.1.0",
     "cross-env": "5.2.1",
     "gh-pages": "2.1.1",
