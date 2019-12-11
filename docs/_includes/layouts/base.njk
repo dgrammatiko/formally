@@ -20,6 +20,6 @@
   {% block foot %}
   {% endblock %}
   <script type="module" src="/js/components/theme-toggle.js" async defer></script>
-  <script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js'); }); } </script>
+  <script type=module>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js'); }); } </script>
 </body>
 </html>
