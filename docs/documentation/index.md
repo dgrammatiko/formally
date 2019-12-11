@@ -2,6 +2,10 @@
 layout: layouts/docs.njk
 title: Formally documented
 postsHeading: A tiny wrapper around the HTML5 native validation
+<<<<<<< HEAD
+=======
+archiveButtonText: See all posts
+>>>>>>> d9ad012d9dc16c664576d3cc19da957b673564d7
 socialImage: ''
 ---
 # How it works
