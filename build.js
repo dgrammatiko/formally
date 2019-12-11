@@ -1,26 +1,54 @@
 import babel from 'rollup-plugin-babel/dist/rollup-plugin-babel.esm.js';
-import { compress } from 'brotli'
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from 'rollup-plugin-commonjs/dist/rollup-plugin-commonjs.es';
 import FsExtra from 'fs-extra';
-import { gzip } from 'node-zopfli'
-import gzipPlugin from 'rollup-plugin-gzip';
+import gzipPlugin from 'rollup-plugin-gzip/dist-es';
 import path from 'path';
-import resolve from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve/dist/index.es';
 import Recurs from 'recursive-readdir';
-import { rollup } from 'rollup';
+import { rollup } from 'rollup/dist/rollup.es';
 import { terser } from 'rollup-plugin-terser/index';
+import { BrotliCompress, gzip } from 'zlib';
+
+// const compBrotli = (fileContent, outputOptions) => {
+//   return new Promise((resolve, reject) => {
+//     BrotliCompress(fileContent, outputOptions || {}, (err, result) => {
+//       if (err) {
+//         reject(err);
+//       }
+//       else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// };
+
+
+const compGzip = (fileContent, outputOptions) => {
+  return new Promise((resolve, reject) => {
+    gzip(fileContent, outputOptions || {}, (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+const commonPlugins = [
+  terser(),
+  gzipPlugin({
+    customCompression: (content, outputOptions) => compGzip(Buffer.from(content), outputOptions)
+  }),
+  // gzipPlugin({
+  //   fileName: '.br',
+  //   customCompression: (content, outputOptions) => compBrotli(Buffer.from(content), outputOptions),
+  // }),
+];
 
 const plugins = {
-  esm: [
-    terser(),
-    gzipPlugin({
-      customCompression: content => gzip(Buffer.from(content)),
-    }),
-    gzipPlugin({
-      fileName: '.br',
-      customCompression: content => compress(Buffer.from(content)),
-    }),
-  ],
+  esm: [],
   iife: [
     resolve(),
     commonjs(),
@@ -39,14 +67,6 @@ const plugins = {
           },
         ],
       ],
-    }),
-    terser(),
-    gzipPlugin({
-      customCompression: content => gzip(Buffer.from(content)),
-    }),
-    gzipPlugin({
-      fileName: '.br',
-      customCompression: content => compress(Buffer.from(content)),
     }),
   ]
 }
@@ -69,18 +89,16 @@ const execRollup = async function (file, setting) {
     ppp.output.name = name;
   }
 
-  ppp.plugins = plugins[`${setting}`];
+  ppp.plugins = plugins[`${setting}`].concat(commonPlugins);
 
   FsExtra.mkdirsSync(path.dirname(output));
 
   const bundle = await rollup(ppp);
-
   await bundle.write(ppp.output);
 
-  console.log('#############################');
   console.log(`Generated: ${ppp.output.file}`);
   console.log(`Generated: ${ppp.output.file}.gz`);
-  console.log(`Generated: ${ppp.output.file}.br`);
+  // console.log(`Generated: ${ppp.output.file}.br`);
   console.log('#############################');
 };
 
