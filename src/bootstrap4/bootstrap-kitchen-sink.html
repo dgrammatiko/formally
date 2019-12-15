@@ -17,15 +17,15 @@
 
 <body>
   <section class=wrapper>
-    <form data-valid-class="is-valid" data-invalid-class="is-invalid" data-invalid-form-alert="true"
-      data-indicator="true" data-indicator-position="after" data-indicator-class="invalid-feedback">
+    <form data-valid-class="is-valid" data-invalid-class="is-invalid" data-invalid-form-alert="false"
+      data-indicator="false" data-indicator-position="after" data-indicator-class="invalid-feedback">
 
       <div class="mb-3">
         <label for="text">Text input</label>
         <input type="text" class="form-control" id="text" placeholder="Required example textarea" pattern="^[a-z]+$"
-          data-value-missing="This needs to be filled" data-pattern-mismatch="Only lowercase letters here"
-          data-too-long="Not bigger than 10 letters" data-too-short="Not smaller than 5 letters" minlength="5"
-          maxlength="10" required>
+          data-value-missing="The Text Input cannot be empty" data-pattern-mismatch="Only lowercase letters here"
+          data-too-long="Not bigger than 10 letters" data-too-short="Not smaller than 5 letters"
+          data-custom-Error="Ooops" minlength="5" maxlength="10" required>
       </div>
 
       <div class="mb-3">

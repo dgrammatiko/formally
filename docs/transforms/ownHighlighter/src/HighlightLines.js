@@ -9,7 +9,7 @@ class HighlightLines {
       return hash;
     }
 
-    let ranges = rangeStr.split(",").map(function (range) {
+    let ranges = rangeStr.split(',').map(function (range) {
       return range.trim();
     });
 

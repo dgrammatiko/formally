@@ -1,13 +1,13 @@
 /* eslint no-undef: 0 */
 import { Formally } from './bootstrap4';
 
-const formsWithValidateClass = Array.from(document.querySelectorAll('form:not([novalidate]'));
+const formsWithoutNovalidateAttribute = Array.from(document.querySelectorAll('form:not([novalidate]'));
 
 // Global scope
 window.Formally = Formally;
 
 const def = () => {
-  formsWithValidateClass.forEach(form => {
+  formsWithoutNovalidateAttribute.forEach(form => {
     new Formally(form);
   });
 };
