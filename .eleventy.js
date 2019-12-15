@@ -28,6 +28,7 @@ module.exports = function (config) {
   config.addTransform('parse', parseTransform);
 
   // Passthrough copy
+  config.addPassthroughCopy('dist/bootstrap4');
   config.addPassthroughCopy('docs/fonts');
   config.addPassthroughCopy('docs/images');
   config.addPassthroughCopy('docs/js');

@@ -1,20 +1,20 @@
 import { debounce, uaSupportsPassive } from './utils';
 import { defaults } from './defaults';
 
-// Micro optimizations
-const hA = 'hasAttribute';
-const hOP = 'hasOwnProperty';
-const aEL = 'addEventListener';
-const rEL = 'removeEventListener';
-
-class FormValidatorBase {
+class Formally {
+  /**
+  * Constructor
+  *
+  * @param {HTMLFormElement} form Expects a form element to act upon
+  *
+  */
   constructor(form) {
     this.form = form;
     if (!form || form.constructor.name !== 'HTMLFormElement') {
       throw new Error('Validator needs a form element');
     }
 
-    if (this.form[hA]('novalidate')) {
+    if (this.form.hasAttribute('novalidate')) {
       return;
     }
 
@@ -22,91 +22,120 @@ class FormValidatorBase {
     // Eg: for validClass the attribute will be data-valid-class
     this.options = defaults;
 
-    if (this.form.dataset) {
-      for (const data in this.form.dataset) {
-        if (Object.prototype[hOP].call(this.options, data)) {
-          if (data === 'indicator' || data === 'invalidFormAlert') {
-            this.options[data] = (this.form.dataset[data] === 'true');
-          } else {
-            this.options[data] = this.form.dataset[data];
-          }
-        }
-      }
-    }
+    // The class instance is accesible at: form.Formally
+    this.form.Formally = this;
 
     this.passiveSupported = uaSupportsPassive();
     this.elementsForValidation = [];
-    this.formElementValidate = this.formElementValidate.bind(this);
-    this.reAttachElement = this.reAttachElement.bind(this);
-    this.debounced = debounce(99, this.formElementValidate);
+    this.validateFormElement = this.validateFormElement.bind(this);
+    this.attachElement = this.attachElement.bind(this);
+    this.elementInit = this.elementInit.bind(this);
+    this.notify = this.notify.bind(this);
+    this.invalidFormNotification = this.invalidFormNotification.bind(this);
+    this.debounced = debounce(99, this.validateFormElement);
 
     this.init();
-
-    // The class instance is accesible at: form.Formally
-    this.form.Formally = this;
   }
 
   /**
    * These methods was intentionally left empty here so the class could be extended
    * to match the developer's particular needs
    */
-  formInvalidNotification() { /** Throws an alert if the form is invalid */ }
+  invalidFormNotification() { /** Throws an alert if the form is invalid */ }
   notify() { /** This method updates the notification element text */ }
-  switchClasses() { /** This method switches the classes per element */ }
   elementInit() { /** This method creates the required element for the notification */ }
 
   /**
    * This method will check the validity of the element
    * Expects the element to be at event.target
    * 
-   * @param {{}} event The event that initiated this action
+   * @param {{} || HTMLElement} event The event that initiated this action 
+   *                                   or the element to be validated
    */
-  formElementValidate(event) {
-    const formElement = event.target;
+  validateFormElement(event) {
+    let formElement = null;
+    if (event && event.target) {
+      formElement = event.target;
+    } else {
+      formElement = event;
+    }
+
+    if (!formElement) {
+      throw new Error('Method formElementValidate needs a valid event.target or a form element');
+    }
     // Custom validators are set through formElement.FormallyCustomValidator
-    if (formElement.FormallyCustomValidator && typeof formElement.FormallyCustomValidator === 'function') {
-      formElement.customValidator();
+    if (Object.prototype.hasOwnProperty.call(formElement, 'FormallyCustomValidator') && typeof formElement.FormallyCustomValidator === 'function') {
+      formElement.FormallyCustomValidator();
+      this.notify(formElement, formElement.validity.valid);
     } else {
       formElement.checkValidity();
+      this.notify(formElement, formElement.validity.valid);
     }
-    this.notify(formElement);
   }
 
   /**
-   * 
+   * Method to get the elements custom error messages
+   *   Requires this.indicator to be true
    * @param {formElement} input the element
    * @param {string} type the element type
    * @param {{}} validity the validity object
+   * 
+   * @returns {string || null}
+   * 
+   * @example
+   * <input 
+   *        data-value-missing="Text for error triggered when the input cannot be empty"
+   *        data-type-mismatch="The input was number but the user inserted text"
+   *        data-pattern-mismatch="The input value doesnt satisfy the pattern provided"
+   *        data-too-long="The input value is bigger than maxlength"
+   *        data-too-short="The input value is samller than minlength"
+   *        data-bad-input="The input value wasn't an actual date/time/etc"
+   *        data-range-underflow="The input value is samller than min"
+   *        data-range-overflow="The input value is biggger than max"
+   *        data-step-mismatch="The input step wasn't valid"
+   * 
+   * Setting a data-custom-error will render the field ALWAYS invalid!!!!
    */
   getCustomMessage(input, type, validity) {
+    if (!input || !type || !validity) {
+      return null;
+    }
+
     const data = input.dataset;
     if (typeof data === 'object') {
       if (validity.typeMismatch && data[`${type}Mismatch`]) {
         return data[`${type}Mismatch`];
       } else {
         for (const invalidKey in data) {
-          if (Object.prototype[hOP].call(data, invalidKey) && validity[invalidKey]) {
+          if (Object.prototype.hasOwnProperty.call(data, invalidKey) && validity[invalidKey] === true) {
             return data[invalidKey];
           }
         }
       }
     }
-    return '';
+    return null;
   }
 
   /**
    * Shortcut to get the validity of the form.
    */
   isValid() {
+    let firstInvalid = 'i';
     this.elementsForValidation.forEach((formElement) => {
-      this.switchClasses(formElement, formElement.validity.valid);
-      this.notify(formElement);
+      const valid = formElement.checkValidity();
+      this.notify(formElement, valid);
+      if (typeof firstInvalid !== 'string' && !valid) {
+        firstInvalid = formElement;
+      }
     });
 
     if (this.form.checkValidity()) {
       return true;
     } else {
-      this.formInvalidNotification();
+      this.invalidFormNotification();
+      if (typeof firstInvalid !== 'string') {
+        firstInvalid.focus();
+      }
       return false;
     }
   }
@@ -115,24 +144,34 @@ class FormValidatorBase {
    * Method that initiates the behaviours
    */
   init() {
+    /**
+     * Use any of the options provided through data-*
+     */
+    if (this.form.dataset) {
+      for (const data in this.form.dataset) {
+        if (Object.prototype.hasOwnProperty.call(this.form.Formally.options, data)) {
+          if (data === 'indicator' || data === 'invalidFormAlert') {
+            this.form.Formally.options[data] = this.form.dataset[data] === 'true' ? true : false;
+          } else {
+            this.form.Formally.options[data] = this.form.dataset[data];
+          }
+        }
+      }
+    }
+
     [].slice.call(this.form.elements).forEach((formElement) => {
-      const type = formElement.tagName;
-      if (type && (type === 'INPUT' || type === 'SELECT' || type === 'TEXTAREA')) {
-        if (formElement[hA]('disabled') || (typeof formElement.dataset.allowValidation !== 'undefined' && formElement.dataset.allowValidation === 'true')) {
-          return;
-        }
-        this.elementsForValidation.push(formElement);
-        formElement[aEL]('blur', this.debounced), this.passiveSupported ? { passive: true } : false;
-        formElement[aEL]('change', this.debounced, this.passiveSupported ? { passive: true } : false);
+      // Valid elements: INPUT, SELECT, TEXTAREA, BUTTON, OUTPUT, FIELDSET
+      if (formElement.hasAttribute('disabled') || (typeof formElement.dataset.allowValidation !== 'undefined' && formElement.dataset.allowValidation === 'true') || formElement.tagName === 'FIELDSET') {
+        return;
+      }
 
-        if (type !== 'SELECT') {
+      this.elementsForValidation.push(formElement);
+      formElement.addEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : true);
+      formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
+      formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
 
-          formElement[aEL]('input', this.debounced, this.passiveSupported ? { passive: true } : false);
-        }
-
-        if (this.options.indicator && (this.form.dataset && Object.keys(this.form.dataset).length !== 0)) {
-          this.elementInit(formElement);
-        }
+      if (this.options.indicator) {
+        this.elementInit(formElement);
       }
     });
   }
@@ -143,26 +182,32 @@ class FormValidatorBase {
    *  
    * @param {nodeElement} formElement the element
    */
-  reAttachElement(formElement) {
-    const type = formElement.tagName;
-    formElement[rEL]('blur', this.debounced, this.passiveSupported ? { passive: true } : false);
-    formElement[rEL]('change', this.debounced, this.passiveSupported ? { passive: true } : false);
-    formElement[rEL]('input', this.debounced, this.passiveSupported ? { passive: true } : false);
+  attachElement(formElement) {
+    // Early ruturn for not qualifying elements 
+    if (formElement.hasAttribute('disabled') ||
+      (
+        typeof formElement.dataset.allowValidation !== 'undefined'
+        && formElement.dataset.allowValidation === 'true'
+      )
+      || !formElement.willValidate
+    ) {
+      return;
+    }
 
-    if (type && (type === 'INPUT' || type === 'SELECT' || type === 'TEXTAREA')) {
-      formElement[aEL]('blur', this.debounced, this.passiveSupported ? { passive: true } : false);
+    // Remove any existing listeners
+    formElement.removeEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : true);
+    formElement.removeEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
+    formElement.removeEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
 
-      if (type === 'SELECT') {
-        formElement[aEL]('change', this.debounced, this.passiveSupported ? { passive: true } : false);
-      } else {
-        formElement[aEL]('input', this.debounced, this.passiveSupported ? { passive: true } : false);
-      }
+    // Add the needed listeners
+    formElement.addEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : true);
+    formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
+    formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
 
-      if (this.options.indicator && (this.form.dataset && Object.keys(this.form.dataset).length !== 0)) {
-        this.elementInit(formElement);
-      }
+    if (this.options.indicator) {
+      this.elementInit(formElement);
     }
   }
 }
 
-export { FormValidatorBase };
+export { Formally };
