@@ -18,6 +18,23 @@ const slugify = require('slugify');
 //   return hasCode;
 // }
 
+function restoreCoded(input) {
+  return decodeURIComponent(input)
+    .replace(/%2F/g, '/')
+    .replace(/%3B/g, ';')
+    .replace(/%23/g, '#')
+    .replace(/%20/g, ' ')
+    .replace(/%2C/g, ',')
+    .replace(/%2F/g, '/')
+    .replace(/%3F/g, '?')
+    .replace(/%3A/g, ':')
+    .replace(/%40/g, '@')
+    .replace(/%26/g, '&')
+    .replace(/%3D/g, '=')
+    .replace(/%2B/g, '+')
+    .replace(/%24/g, '$');
+}
+
 module.exports = function (value, outputPath) {
   if (outputPath.endsWith('.html')) {
     const DOM = new JSDOM(value, {
@@ -122,15 +139,15 @@ module.exports = function (value, outputPath) {
 
         codes.forEach(cd => {
           if (cd.classList.contains('language-html')) {
-            value.html = decodeURIComponent(cd.dataset.html).replace(/%2F/g, '/');
+            value.html = restoreCoded(cd.dataset.html);
             cd.removeAttribute('data-html');
           }
           if (cd.classList.contains('language-css')) {
-            value.css = cd.dataset.css;
+            value.css = restoreCoded(cd.dataset.css);
             cd.removeAttribute('data-css');
           }
           if (cd.classList.contains('language-js')) {
-            value.css = cd.dataset.js;
+            value.js = restoreCoded(cd.dataset.js);
             cd.removeAttribute('data-js');
           }
         });

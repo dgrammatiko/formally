@@ -1,2 +1,5 @@
 dist
-build.js
+docs
+docs_public
+cypress
+node_modules

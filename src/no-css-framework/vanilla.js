@@ -1,8 +1,8 @@
 /* eslint no-undef: 0 */
-import { FormValidatorBase } from '../formvalidatorbase';
+import { Formally } from '../formvalidatorbase';
 import { guid } from '../utils';
 
-class Formally extends FormValidatorBase {
+class FormallyVanilla extends Formally {
   constructor(form) {
     super(form);
 
@@ -105,4 +105,4 @@ class Formally extends FormValidatorBase {
   }
 }
 
-export { Formally };
+export { FormallyVanilla };

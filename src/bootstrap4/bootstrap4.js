@@ -1,22 +1,12 @@
 /* eslint no-undef: 0 */
-import { FormValidatorBase } from '../formvalidatorbase';
+import { Formally } from '../formvalidatorbase.js';
 import { guid } from '../utils';
 
-class Formally extends FormValidatorBase {
+class FormallyBs4 extends Formally {
   constructor(form) {
     super(form);
 
-    // We could override the default options here
-    // this.options = {
-    //   validClass: 'is-valid',
-    //   invalidClass: 'is-invalid',
-    //   indicator: true,
-    //   invalidForm: 'Text for invalid form',
-    //   invalidFormAlert: true,
-    //   indicatorElement: 'div',
-    //   indicatorPosition: 'after',
-    //   indicatorClass: 'invalid-feedback',
-    // };
+    this.switchClasses = this.switchClasses.bind(this);
   }
 
   // This method switches the given element classes
@@ -56,12 +46,11 @@ class Formally extends FormValidatorBase {
   }
 
   // This method updates the notification element text
-  notify(formElement) {
+  notify(formElement, isValid) {
     if (formElement.hasAttribute('disabled')) {
       return;
     }
 
-    const isValid = formElement.validity.valid;
     const type = formElement.getAttribute('type');
     const message = isValid ? null : this.getCustomMessage(formElement, formElement.type, formElement.validity);
 
@@ -69,21 +58,18 @@ class Formally extends FormValidatorBase {
 
     // Radios need a bit more
     if (type && type === 'radio') {
-      const name = formElement.name;
-
-      this.elementsForValidation.forEach((el) => {
-        if (el.name && el.name === name || el === formElement) {
+      const elms = this.elementsForValidation;
+      elms
+        .filter(el => el.name !== formElement.name)
+        .forEach((el) => {
           this.switchClasses(el, isValid);
-        }
-      });
+        });
     }
 
-    if (!this.options.indicator) {
-      if (message) {
-        formElement.setCustomValidity(message);
+    if (!((this.form.dataset && Object.keys(this.form.dataset).length !== 0) && this.form.dataset.indicator === 'true')) {
+      if (document.activeElement === formElement) {
+        formElement.reportValidity();
       }
-
-      formElement.reportValidity();
     } else {
       if (message) {
         formElement.setCustomValidity('');
@@ -96,13 +82,13 @@ class Formally extends FormValidatorBase {
   }
 
   // Throws an alert if the form is invalid
-  formInvalidNotification() {
+  invalidFormNotification() {
     // Example of an alert
-    // if (this.form.dataset.invalidFormAlert && window.Joomla && typeof window.Joomla.renderMessages === 'function') {
-    //   window.Joomla.renderMessages({ 'Error': [this.form.dataset.invalidForm ? this.form.dataset.invalidForm : 'Please correct the invalid iputs'] });
-    // }
-    // return;
+    if (this.form.dataset.invalidFormAlert) {
+      alert('Please correct the invalid iputs');
+    }
+    return;
   }
 }
 
-export { Formally };
+export { FormallyBs4 };

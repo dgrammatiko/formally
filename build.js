@@ -1,13 +1,13 @@
 import babel from 'rollup-plugin-babel/dist/rollup-plugin-babel.esm.js';
 import commonjs from 'rollup-plugin-commonjs/dist/rollup-plugin-commonjs.es';
 import FsExtra from 'fs-extra';
-import gzipPlugin from 'rollup-plugin-gzip/dist-es';
+// import gzipPlugin from 'rollup-plugin-gzip/dist-es';
 import path from 'path';
 import resolve from '@rollup/plugin-node-resolve/dist/index.es';
 import Recurs from 'recursive-readdir';
 import { rollup } from 'rollup/dist/rollup.es';
 import { terser } from 'rollup-plugin-terser/index';
-import { BrotliCompress, gzip } from 'zlib';
+// import { BrotliCompress, gzip } from 'zlib';
 
 // const compBrotli = (fileContent, outputOptions) => {
 //   return new Promise((resolve, reject) => {
@@ -23,24 +23,24 @@ import { BrotliCompress, gzip } from 'zlib';
 // };
 
 
-const compGzip = (fileContent, outputOptions) => {
-  return new Promise((resolve, reject) => {
-    gzip(fileContent, outputOptions || {}, (err, result) => {
-      if (err) {
-        reject(err);
-      }
-      else {
-        resolve(result);
-      }
-    });
-  });
-};
+// const compGzip = (fileContent, outputOptions) => {
+//   return new Promise((resolve, reject) => {
+//     gzip(fileContent, outputOptions || {}, (err, result) => {
+//       if (err) {
+//         reject(err);
+//       }
+//       else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// };
 
 const commonPlugins = [
   terser(),
-  gzipPlugin({
-    customCompression: (content, outputOptions) => compGzip(Buffer.from(content), outputOptions)
-  }),
+  // gzipPlugin({
+  //   customCompression: (content, outputOptions) => compGzip(Buffer.from(content), outputOptions)
+  // }),
   // gzipPlugin({
   //   fileName: '.br',
   //   customCompression: (content, outputOptions) => compBrotli(Buffer.from(content), outputOptions),
@@ -69,7 +69,7 @@ const plugins = {
       ],
     }),
   ]
-}
+};
 
 const settings = ['esm', 'iife'];
 
@@ -96,9 +96,11 @@ const execRollup = async function (file, setting) {
   const bundle = await rollup(ppp);
   await bundle.write(ppp.output);
 
+  // eslint-disable-next-line no-console
   console.log(`Generated: ${ppp.output.file}`);
-  console.log(`Generated: ${ppp.output.file}.gz`);
+  // console.log(`Generated: ${ppp.output.file}.gz`);
   // console.log(`Generated: ${ppp.output.file}.br`);
+  // eslint-disable-next-line no-console
   console.log('#############################');
 };
 
@@ -120,9 +122,9 @@ Recurs('src', ['!*.html', ''])
       FsExtra.mkdirsSync(path.dirname(output));
       FsExtra.copyFileSync(file, output);
     },
-      (error) => {
-        // eslint-disable-next-line no-console
-        console.error(error.formatted);
-      }
+    (error) => {
+      // eslint-disable-next-line no-console
+      console.error(error.formatted);
+    }
     );
   });

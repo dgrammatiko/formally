@@ -1,17 +1,10 @@
 /* eslint no-undef: 0 */
-import { Formally } from './bootstrap4';
+import { FormallyBs4 } from './bootstrap4';
 
-const formsWithValidateClass = Array.from(document.querySelectorAll('form:not([novalidate]'));
+const forms = [...document.querySelectorAll('form:not([novalidate]')];
 
-// Global scope
-window.Formally = Formally;
+forms.forEach(form => {
+  new FormallyBs4(form);
+});
 
-const def = () => {
-  formsWithValidateClass.forEach(form => {
-    new Formally(form);
-  });
-};
-
-def();
-
-export { Formally };
+export { FormallyBs4 };
