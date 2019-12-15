@@ -12,18 +12,32 @@ This is just what the platform already provides: if an attribute `novalidate` ex
 
 ### Examples
 #### Form shouldn't validate
+
+<div class="codepen">
+
 ```html
 <form novalidate>...</form>
 ```
+
+</div>
+
 #### Form should validate
+
+<div class="codepen">
+
 ```html
 <form>...</form>
 ```
+
+</div>
 
 ## Controling the styling
 The default behaviour of the browsers is to activate the `:valid` or `:invalid` in the CSS side per input. This introduces a problem when we need to server render an empty form as the empty fields that have a required attribute will be indicated as invalid, although the potential user didn't even had a chance to even interact with the page. Sad... But do not dispare, we will bend the rules a bit here to achieve what we want without any drawbacks: we'll use our own css classes. All the popular CSS Frameworks follow this path for the same exact reason. We're not inventing the wheel here.
 
 ### Example
+
+<div class="codepen">
+
 ```html
 <form 
 data-valid-class="is-valid"
@@ -31,6 +45,9 @@ data-invalid-class="is-invalid">
 ..
 </form>
 ```
+
+</div>
+
 #### Explainer
 `data-valid-class="is-valid"` Sets the class for the **valid** fields
 `data-invalid-class="is-invalid"` Sets the class for the **invalid** fields
@@ -44,6 +61,9 @@ Note: because the valid attributes per HTML Element are defined Formally cannot 
 ### Examples
 #### Form should use custom mesagegs
 This **DISABLES** the default browser popups-tips and **REQUIRES** all the decentant elements to provide thier own error messages!
+
+<div class="codepen">
+
 ```html
 <form 
 data-invalid-form-alert="true"
@@ -53,6 +73,8 @@ data-indicator-class="invalid-feedback">
 ..
 </form>
 ```
+</div>
+
 #### Explainer
 `data-invalid-form-alert="true"` Enables a custom notification if the form is invalid (throwed only through the isValid method)
 
