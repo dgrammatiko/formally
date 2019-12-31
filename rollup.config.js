@@ -1,7 +1,7 @@
-const builtins = require('@erquhart/rollup-plugin-node-builtins');
-const commonjs = require('rollup-plugin-commonjs');
-const nodeResolve = require('rollup-plugin-node-resolve');
-const json = require('rollup-plugin-json');
+import builtins from '@erquhart/rollup-plugin-node-builtins';
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import json from 'rollup-plugin-json';
 
 export default {
   input: 'docs/admin/util',

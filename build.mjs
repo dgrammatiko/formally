@@ -1,12 +1,12 @@
-import babel from 'rollup-plugin-babel/dist/rollup-plugin-babel.esm.js';
-import commonjs from 'rollup-plugin-commonjs/dist/rollup-plugin-commonjs.es';
+import babel from 'rollup-plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
 import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es';
 import path from 'path';
-import resolve from '@rollup/plugin-node-resolve/dist/index.es';
+import resolve from '@rollup/plugin-node-resolve';
 import Recurs from 'recursive-readdir';
-import { rollup } from 'rollup/dist/rollup.es';
-import { terser } from 'rollup-plugin-terser/index';
+import rollup from 'rollup';
+import terser from 'rollup-plugin-terser';
 // import { BrotliCompress, gzip } from 'zlib';
 
 // const compBrotli = (fileContent, outputOptions) => {
@@ -37,7 +37,7 @@ import { terser } from 'rollup-plugin-terser/index';
 // };
 
 const commonPlugins = [
-  terser(),
+  terser.terser(),
   // gzipPlugin({
   //   customCompression: (content, outputOptions) => compGzip(Buffer.from(content), outputOptions)
   // }),
@@ -93,7 +93,7 @@ const execRollup = async function (file, setting) {
 
   FsExtra.mkdirsSync(path.dirname(output));
 
-  const bundle = await rollup(ppp);
+  const bundle = await rollup.rollup(ppp);
   await bundle.write(ppp.output);
 
   // eslint-disable-next-line no-console
@@ -122,9 +122,9 @@ Recurs('src', ['!*.html', ''])
       FsExtra.mkdirsSync(path.dirname(output));
       FsExtra.copyFileSync(file, output);
     },
-    (error) => {
-      // eslint-disable-next-line no-console
-      console.error(error.formatted);
-    }
+      (error) => {
+        // eslint-disable-next-line no-console
+        console.error(error.formatted);
+      }
     );
   });
