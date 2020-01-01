@@ -5,7 +5,7 @@
   "main": "src/formvalidatorbase.js",
   "type": "module",
   "scripts": {
-    "build": "npx eslint src/. && node -r esm build.js",
+    "build": "npx eslint src/. && node -r esm build.mjs",
     "sass:tokens": "npx json-to-scss docs/_data/tokens.json docs/scss/_tokens.scss",
     "sass:process": "npm run sass:tokens && sass docs/scss/global.scss docs/_includes/assets/css/global.css --style=compressed",
     "cms:precompile": "make-dir dist/admin && nunjucks-precompile docs/_includes > dist/admin/templates.js -i \"\\.(njk|css|svg)$\"",
@@ -50,7 +50,7 @@
     "@babel/register": "7.7.4",
     "@babel/runtime-corejs2": "7.7.6",
     "@erquhart/rollup-plugin-node-builtins": "2.1.5",
-    "@rollup/plugin-commonjs": "^11.0.0",
+    "@rollup/plugin-commonjs": "11.0.0",
     "@rollup/plugin-node-resolve": "6.0.0",
     "babel-preset-env": "1.7.0",
     "bl": "4.0.0",
