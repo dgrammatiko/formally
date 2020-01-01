@@ -22,7 +22,6 @@ import terser from 'rollup-plugin-terser';
 //   });
 // };
 
-
 // const compGzip = (fileContent, outputOptions) => {
 //   return new Promise((resolve, reject) => {
 //     gzip(fileContent, outputOptions || {}, (err, result) => {
