@@ -50,7 +50,7 @@
     "@babel/register": "7.7.4",
     "@babel/runtime-corejs2": "7.7.6",
     "@erquhart/rollup-plugin-node-builtins": "2.1.5",
-    "@rollup/plugin-commonjs": "11.0.0",
+    "@rollup/plugin-commonjs": "11.0.1",
     "@rollup/plugin-node-resolve": "6.0.0",
     "babel-preset-env": "1.7.0",
     "bl": "4.0.0",
