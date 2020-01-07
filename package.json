@@ -61,7 +61,7 @@
     "cypress": "3.8.1",
     "esm": "3.2.25",
     "fs-extra": "8.1.0",
-    "gh-pages": "2.1.1",
+    "gh-pages": "2.2.0",
     "http-server": "0.12.0",
     "make-dir-cli": "2.0.0",
     "node-zopfli": "2.1.3",
