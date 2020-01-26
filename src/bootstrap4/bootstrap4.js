@@ -1,16 +1,14 @@
 /* eslint no-undef: 0 */
-import { Formally } from '../formvalidatorbase.js';
+import { Formally } from '../formally';
 import { guid } from '../utils';
 
-class FormallyBs4 extends Formally {
-  constructor(form) {
-    super(form);
-
-    this.switchClasses = this.switchClasses.bind(this);
-  }
-
-  // This method switches the given element classes
-  switchClasses(formElement, isValid) {
+/**
+ * Method to switch Classes on a form element per state
+ */
+Object.defineProperty(Formally.prototype, 'switchClasses', {
+  writable: true,
+  configurable: true,
+  value(formElement, isValid) {
     if (isValid) {
       formElement.classList.remove(this.options.invalidClass);
       formElement.classList.add(this.options.validClass);
@@ -19,9 +17,15 @@ class FormallyBs4 extends Formally {
       formElement.classList.add(this.options.invalidClass);
     }
   }
+});
 
-  // This method creates the required element for the notification
-  elementInit(formElement) {
+/**
+ * Method to attach element to the formally logic
+ */
+Object.defineProperty(Formally.prototype, 'elementInit', {
+  writable: true,
+  configurable: true,
+  value(formElement) {
     if (formElement.hasAttribute('disabled')) {
       return;
     }
@@ -44,9 +48,15 @@ class FormallyBs4 extends Formally {
       formElement.insertAdjacentElement('beforebegin', span);
     }
   }
+});
 
-  // This method updates the notification element text
-  notify(formElement, isValid) {
+/**
+ * Method to control the notification (invalid state messages)
+ */
+Object.defineProperty(Formally.prototype, 'notify', {
+  writable: true,
+  configurable: true,
+  value(formElement, isValid) {
     if (formElement.hasAttribute('disabled')) {
       return;
     }
@@ -80,15 +90,21 @@ class FormallyBs4 extends Formally {
       }
     }
   }
+});
 
-  // Throws an alert if the form is invalid
-  invalidFormNotification() {
+/**
+ * Method to handle a global notification (eg alert, toast, etc)
+ */
+Object.defineProperty(Formally.prototype, 'invalidFormNotification', {
+  writable: true,
+  configurable: true,
+  value() {
     // Example of an alert
     if (this.form.dataset.invalidFormAlert) {
       alert('Please correct the invalid iputs');
     }
     return;
   }
-}
+});
 
-export { FormallyBs4 };
+export { Formally };

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>No validate</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 4rem
+        }
+    </style>
+</head>
+
+<body>
+    <section class=wrapper>
+        <form data-valid-class="valid" data-invalid-class="invalid" data-invalid-form-alert="true"
+            data-indicator="false" data-indicator-position="before" data-indicator-class="random"
+            data-indicator-element="div" data-invalid-form="Random text">
+
+            <div class="mb-3">
+                <label for="text">Text input</label>
+                <input type="text" class="form-control" id="text" placeholder="Required example textarea"
+                    pattern="^[a-z]+$" data-value-missing="The Text Input cannot be empty"
+                    data-pattern-mismatch="Only lowercase letters here" data-too-long="Not bigger than 10 letters"
+                    data-too-short="Not smaller than 5 letters" data-custom-Error="Ooops" minlength="5" maxlength="10"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label for="validationTextarea">Textarea</label>
+                <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea"
+                    required></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                    <label class="form-check-label" for="gridCheck">
+                        Check me out
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <select class="form-control custom-select" required>
+                    <option value="">Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <div class="form-group">
+                    <button type=submit class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </section>
+
+    <script src="/dist/bootstrap4/nocode-bootstrap4.iffe.es5.min.js"></script>
+</body>
+
+</html>

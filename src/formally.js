@@ -1,12 +1,11 @@
 import { debounce, uaSupportsPassive } from './utils';
-import { defaults } from './defaults';
+import { defaultSettings } from './defaults';
 
 class Formally {
   /**
   * Constructor
   *
   * @param {HTMLFormElement} form Expects a form element to act upon
-  *
   */
   constructor(form) {
     this.form = form;
@@ -20,7 +19,7 @@ class Formally {
 
     // Options through data-*
     // Eg: for validClass the attribute will be data-valid-class
-    this.options = defaults;
+    this.options = defaultSettings;
 
     // The class instance is accesible at: form.Formally
     this.form.Formally = this;
@@ -38,7 +37,7 @@ class Formally {
   }
 
   /**
-   * These methods was intentionally left empty here so the class could be extended
+   * These methods was intentionally not implemented here so the class could be customized
    * to match the developer's particular needs
    */
   invalidFormNotification() { /** Throws an alert if the form is invalid */ }
@@ -63,13 +62,19 @@ class Formally {
     if (!formElement) {
       throw new Error('Method formElementValidate needs a valid event.target or a form element');
     }
+
     // Custom validators are set through formElement.FormallyCustomValidator
-    if (Object.prototype.hasOwnProperty.call(formElement, 'FormallyCustomValidator') && typeof formElement.FormallyCustomValidator === 'function') {
+    if (Object.prototype.hasOwnProperty.call(formElement, 'FormallyCustomValidator')
+      && typeof formElement.FormallyCustomValidator === 'function') {
       formElement.FormallyCustomValidator();
-      this.notify(formElement, formElement.validity.valid);
+      if (this.notify && typeof this.notify === 'function') {
+        this.notify(formElement, formElement.validity.valid);
+      }
     } else {
       formElement.checkValidity();
-      this.notify(formElement, formElement.validity.valid);
+      if (this.notify && typeof this.notify === 'function') {
+        this.notify(formElement, formElement.validity.valid);
+      }
     }
   }
 
@@ -123,7 +128,9 @@ class Formally {
     let firstInvalid = 'i';
     this.elementsForValidation.forEach((formElement) => {
       const valid = formElement.checkValidity();
-      this.notify(formElement, valid);
+      if (this.notify && typeof this.notify === 'function') {
+        this.notify(formElement, valid);
+      }
       if (typeof firstInvalid !== 'string' && !valid) {
         firstInvalid = formElement;
       }
@@ -132,7 +139,10 @@ class Formally {
     if (this.form.checkValidity()) {
       return true;
     } else {
-      this.invalidFormNotification();
+      if (this.invalidFormNotification && typeof this.invalidFormNotification === 'function') {
+        this.invalidFormNotification();
+      }
+
       if (typeof firstInvalid !== 'string') {
         firstInvalid.focus();
       }
@@ -161,7 +171,14 @@ class Formally {
 
     [].slice.call(this.form.elements).forEach((formElement) => {
       // Valid elements: INPUT, SELECT, TEXTAREA, BUTTON, OUTPUT, FIELDSET
-      if (formElement.hasAttribute('disabled') || (typeof formElement.dataset.allowValidation !== 'undefined' && formElement.dataset.allowValidation === 'true') || formElement.tagName === 'FIELDSET') {
+      if (
+        formElement.hasAttribute('disabled')
+        || (
+          typeof formElement.dataset.allowValidation !== 'undefined'
+          && formElement.dataset.allowValidation === 'true'
+        )
+        || formElement.tagName === 'FIELDSET'
+      ) {
         return;
       }
 
@@ -170,7 +187,7 @@ class Formally {
       formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
       formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
 
-      if (this.options.indicator) {
+      if (this.options.indicator && this.elementInit && typeof this.elementInit === 'function') {
         this.elementInit(formElement);
       }
     });
@@ -204,7 +221,7 @@ class Formally {
     formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
     formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
 
-    if (this.options.indicator) {
+    if (this.options.indicator && this.elementInit && typeof this.elementInit === 'function') {
       this.elementInit(formElement);
     }
   }

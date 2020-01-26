@@ -13,7 +13,7 @@
  *  data-invalid-form-alert="true"           true or false
  *
  */
-export const defaults = {
+export const defaultSettings = {
   validClass: 'is-valid',
   invalidClass: 'is-invalid',
   indicator: true,

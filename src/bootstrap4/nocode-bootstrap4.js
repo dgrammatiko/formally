@@ -1,10 +1,8 @@
 /* eslint no-undef: 0 */
-import { FormallyBs4 } from './bootstrap4';
+import { Formally } from './bootstrap4';
 
-const forms = [...document.querySelectorAll('form:not([novalidate]')];
+const forms = [].slice.call(document.querySelectorAll('form:not([novalidate]'));
 
-forms.forEach(form => {
-  new FormallyBs4(form);
-});
+forms.forEach(form => { new Formally(form); });
 
-export { FormallyBs4 };
+export { Formally };

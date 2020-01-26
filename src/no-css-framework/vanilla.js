@@ -1,26 +1,14 @@
 /* eslint no-undef: 0 */
-import { Formally } from '../formvalidatorbase';
+import { Formally } from '../formally';
 import { guid } from '../utils';
 
-class FormallyVanilla extends Formally {
-  constructor(form) {
-    super(form);
-
-    // We could override the default options here
-    // this.options = {
-    //   validClass: 'is-valid',
-    //   invalidClass: 'is-invalid',
-    //   indicator: true,
-    //   invalidForm: 'Text for invalid form',
-    //   invalidFormAlert: true,
-    //   indicatorElement: 'div',
-    //   indicatorPosition: 'after',
-    //   indicatorClass: 'invalid-feedback',
-    // };
-  }
-
-  // This method switches the classes per element
-  switchClasses(formElement, isValid) {
+/**
+ * Method to switch Classes on a form element per state
+ */
+Object.defineProperty(Formally, 'switchClasses', {
+  writable: true,
+  configurable: true,
+  value(formElement, isValid) {
     if (isValid) {
       formElement.classList.remove(this.options.invalidClass);
       formElement.classList.add(this.options.validClass);
@@ -29,9 +17,15 @@ class FormallyVanilla extends Formally {
       formElement.classList.add(this.options.invalidClass);
     }
   }
+});
 
-  // This method creates the required element for the notification
-  elementInit(formElement) {
+/**
+ * Method to attach element to the formally logic
+ */
+Object.defineProperty(Formally, 'elementInit', {
+  writable: true,
+  configurable: true,
+  value(formElement) {
     if (formElement.hasAttribute('disabled')) {
       return;
     }
@@ -54,14 +48,19 @@ class FormallyVanilla extends Formally {
       formElement.insertAdjacentElement('beforebegin', span);
     }
   }
+});
 
-  // This method updates the notification element text
-  notify(formElement) {
+/**
+ * Method to control the notification (invalid state messages)
+ */
+Object.defineProperty(Formally, 'notify', {
+  writable: true,
+  configurable: true,
+  value(formElement, isValid) {
     if (formElement.hasAttribute('disabled')) {
       return;
     }
 
-    const isValid = formElement.validity.valid;
     const type = formElement.getAttribute('type');
     const message = isValid ? null : this.getCustomMessage(formElement, formElement.type, formElement.validity);
 
@@ -69,21 +68,18 @@ class FormallyVanilla extends Formally {
 
     // Radios need a bit more
     if (type && type === 'radio') {
-      const name = formElement.name;
-
-      this.elementsForValidation.forEach((el) => {
-        if (el.name && el.name === name || el === formElement) {
+      const elms = this.elementsForValidation;
+      elms
+        .filter(el => el.name !== formElement.name)
+        .forEach((el) => {
           this.switchClasses(el, isValid);
-        }
-      });
+        });
     }
 
-    if (!this.options.indicator) {
-      if (message) {
-        formElement.setCustomValidity(message);
+    if (!((this.form.dataset && Object.keys(this.form.dataset).length !== 0) && this.form.dataset.indicator === 'true')) {
+      if (document.activeElement === formElement) {
+        formElement.reportValidity();
       }
-
-      formElement.reportValidity();
     } else {
       if (message) {
         formElement.setCustomValidity('');
@@ -94,15 +90,21 @@ class FormallyVanilla extends Formally {
       }
     }
   }
+});
 
-  // Throws an alert if the form is invalid
-  formInvalidNotification() {
+/**
+ * Method to handle a global notification (eg alert, toast, etc)
+ */
+Object.defineProperty(Formally, 'invalidFormNotification', {
+  writable: true,
+  configurable: true,
+  value() {
     // Example of an alert
-    // if (this.form.dataset.invalidFormAlert && window.Joomla && typeof window.Joomla.renderMessages === 'function') {
-    //   window.Joomla.renderMessages({ 'Error': [this.form.dataset.invalidForm ? this.form.dataset.invalidForm : 'Please correct the invalid iputs'] });
-    // }
-    // return;
+    if (this.form.dataset.invalidFormAlert) {
+      alert('Please correct the invalid iputs');
+    }
+    return;
   }
-}
+});
 
-export { FormallyVanilla };
+export { Formally };

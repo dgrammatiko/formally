@@ -1,13 +1,13 @@
 import babel from 'rollup-plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import FsExtra from 'fs-extra';
-// import gzipPlugin from 'rollup-plugin-gzip/dist-es';
+import gzipPlugin from 'rollup-plugin-gzip';
 import path from 'path';
 import resolve from '@rollup/plugin-node-resolve';
 import Recurs from 'recursive-readdir';
 import rollup from 'rollup';
 import terser from 'rollup-plugin-terser';
-// import { BrotliCompress, gzip } from 'zlib';
+import { BrotliCompress, gzip } from 'zlib';
 
 // const compBrotli = (fileContent, outputOptions) => {
 //   return new Promise((resolve, reject) => {
@@ -44,6 +44,7 @@ const commonPlugins = [
   //   fileName: '.br',
   //   customCompression: (content, outputOptions) => compBrotli(Buffer.from(content), outputOptions),
   // }),
+  // gzipPlugin(),
 ];
 
 const plugins = {
