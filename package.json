@@ -73,7 +73,7 @@
     "rollup-plugin-json": "4.0.0",
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-terser": "5.2.0",
-    "start-server-and-test": "1.10.7",
+    "start-server-and-test": "1.10.8",
     "zlib": "1.0.5"
   },
   "dependencies": {
