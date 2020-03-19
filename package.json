@@ -60,7 +60,7 @@
     "cross-env": "7.0.2",
     "cypress": "3.8.3",
     "esm": "3.2.25",
-    "fs-extra": "8.1.0",
+    "fs-extra": "9.0.0",
     "gh-pages": "2.2.0",
     "http-server": "0.12.1",
     "make-dir-cli": "2.0.0",
