@@ -1,50 +1,24 @@
 import babel from 'rollup-plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import FsExtra from 'fs-extra';
-import gzipPlugin from 'rollup-plugin-gzip';
+// import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
 import resolve from '@rollup/plugin-node-resolve';
 import Recurs from 'recursive-readdir';
 import rollup from 'rollup';
 import terser from 'rollup-plugin-terser';
-import { BrotliCompress, gzip } from 'zlib';
-
-// const compBrotli = (fileContent, outputOptions) => {
-//   return new Promise((resolve, reject) => {
-//     BrotliCompress(fileContent, outputOptions || {}, (err, result) => {
-//       if (err) {
-//         reject(err);
-//       }
-//       else {
-//         resolve(result);
-//       }
-//     });
-//   });
-// };
-
-// const compGzip = (fileContent, outputOptions) => {
-//   return new Promise((resolve, reject) => {
-//     gzip(fileContent, outputOptions || {}, (err, result) => {
-//       if (err) {
-//         reject(err);
-//       }
-//       else {
-//         resolve(result);
-//       }
-//     });
-//   });
-// };
+import { brotliCompressSync } from 'zlib';
 
 const commonPlugins = [
   terser.terser(),
-  // gzipPlugin({
-  //   customCompression: (content, outputOptions) => compGzip(Buffer.from(content), outputOptions)
-  // }),
-  // gzipPlugin({
-  //   fileName: '.br',
-  //   customCompression: (content, outputOptions) => compBrotli(Buffer.from(content), outputOptions),
-  // }),
+  // // GZIP compression as .gz files
   // gzipPlugin(),
+  // // Brotil compression as .br files
+  // gzipPlugin({
+  //   customCompression: content =>
+  //     brotliCompressSync(Buffer.from(content)),
+  //   fileName: '.br',
+  // }),
 ];
 
 const plugins = {
@@ -75,7 +49,7 @@ const settings = ['esm', 'iife'];
 
 const execRollup = async function (file, setting) {
   const name = setting === 'esm' ? null : 'FormValidator';
-  const output = `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.es6.min.js' : '.iffe.es5.min.js')}`;
+  const output = `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.esm.min.js' : '.iffe.min.js')}`;
   const ppp = {
     input: file,
     output: {

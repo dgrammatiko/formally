@@ -39,14 +39,16 @@
 
             <div class="mb-3">
                 <label for="text3">Text input</label>
-                <input type="text" class="form-control" id="text3" data-value-missing="The Text Input cannot be empty"
+                <input type="text" class="form-control" id="text3" pattern="^[0-9A-Za-z]{5,10}\z"
+                    data-value-missing="The Text Input cannot be empty"
                     data-pattern-mismatch="Only lowercase letters here" data-too-long="Not bigger than 10 letters"
-                    data-too-short="Not smaller than 5 letters" minlength="5" maxlength="10" required value="1">
+                    data-too-short="Not smaller than 5 letters" minlength="5" required value="">
             </div>
 
             <div class="mb-3">
                 <label for="text4">Text input</label>
-                <input type="text" class="form-control" id="text4" data-value-missing="The Text Input cannot be empty"
+                <input type="text" class="form-control" id="text4" pattern="^[0-9A-Za-z]{5,10}\z"
+                    data-value-missing="The Text Input cannot be empty"
                     data-pattern-mismatch="Only lowercase letters here" data-too-long="Not bigger than 10 letters"
                     data-too-short="Not smaller than 5 letters" minlength="5" maxlength="10" required value="">
             </div>

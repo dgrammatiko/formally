@@ -100,9 +100,9 @@ Object.defineProperty(Formally.prototype, 'invalidFormNotification', {
   configurable: true,
   value() {
     // Example of an alert
-    if (this.form.dataset.invalidFormAlert) {
-      alert('Please correct the invalid iputs');
-    }
+    // if (this.form.dataset.invalidFormAlert) {
+    // alert('Please correct the invalid iputs');
+    // }
     return;
   }
 });
