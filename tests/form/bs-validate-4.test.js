@@ -1,9 +1,10 @@
-const timeout = 5000;
+const timeout = 50000;
 
 describe(
     'Bootstrap Validate, Invalid form check [isValid]',
     () => {
         beforeAll(async () => {
+            jest.setTimeout(35000);
             await page.goto(`${URL}/tests/fixtures/bs-validate-4.html`, { waitUntil: 'networkidle2' });
         }, timeout);
 

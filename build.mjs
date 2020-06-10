@@ -1,11 +1,17 @@
-import babel from 'rollup-plugin-babel';
+import rollup from 'rollup';
+import terser from 'rollup-plugin-terser';
+import resolve from '@rollup/plugin-node-resolve';
+// import commonjs from '@rollup/plugin-commonjs';
+// import babel from '@rollup/plugin-babel';
+import pkg from '@rollup/plugin-babel';
+const { babel } = pkg;
+
+
+
 import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
-import resolve from '@rollup/plugin-node-resolve';
 import Recurs from 'recursive-readdir';
-import rollup from 'rollup';
-import terser from 'rollup-plugin-terser';
 import { brotliCompressSync } from 'zlib';
 
 const commonPlugins = [
@@ -23,11 +29,15 @@ const commonPlugins = [
 const plugins = {
   esm: [],
   iife: [
-    resolve(),
+    resolve({
+      browser: true,
+      modulesOnly: true
+    }),
+    // commonjs(),
     babel({
-      externalHelpers: false,
+      babelHelpers: 'bundled',
       sourceMap: false,
-      exclude: [/\/core-js\//],
+      // exclude: 'node_modules/**',
       presets: [
         [
           '@babel/preset-env',

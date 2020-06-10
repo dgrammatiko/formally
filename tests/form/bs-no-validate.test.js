@@ -1,9 +1,10 @@
-const timeout = 5000;
+const timeout = 50000;
 
 describe(
     'No validate',
     () => {
         beforeAll(async () => {
+            jest.setTimeout(35000);
             await page.goto(`${URL}/tests/fixtures/bs-no-validate.html`, { waitUntil: 'domcontentloaded' });
             await page.waitForSelector('form');
         }, timeout);
