@@ -1,13 +1,8 @@
 import rollup from 'rollup';
 import terser from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
-// import commonjs from '@rollup/plugin-commonjs';
-// import babel from '@rollup/plugin-babel';
 import pkg from '@rollup/plugin-babel';
 const { babel } = pkg;
-
-
-
 import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
@@ -57,7 +52,7 @@ const settings = ['esm', 'iife'];
 
 const execRollup = async function (file, setting) {
   const name = setting === 'esm' ? null : 'FormValidator';
-  const output = `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.esm.min.js' : '.iffe.min.js')}`;
+  const output = `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.esm.min.js' : '.iife.min.js')}`;
   const ppp = {
     input: file,
     output: {
