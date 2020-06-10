@@ -4,6 +4,9 @@
   "description": "Form validation leveraging the platform",
   "main": "src/formally.js",
   "type": "module",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "build": "node build.mjs",
     "lint": "npx eslint src/.",
