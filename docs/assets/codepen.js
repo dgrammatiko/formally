@@ -2,11 +2,11 @@ function openCodepen(id) {
   if (!window.pens) return;
 
   if (window.pens[id]) {
-    const form = document.createElement('form');
+    var form = document.createElement('form');
     form.action = "https://codepen.io/pen/define";
     form.method = "POST";
     form.target = "_blank";
-    const input = document.createElement('input');
+    var input = document.createElement('input');
     input.setAttribute('hidden', '');
     input.setAttribute('name', 'data');
     input.setAttribute('value', JSON.stringify(window.pens[id]));
@@ -16,15 +16,13 @@ function openCodepen(id) {
     document.body.removeChild(form)
   }
 }
-const plugin = function (hook, vm) {
+var plugin = function (hook, vm) {
   hook.beforeEach(function (html) {
-    debugger;
-    var JSONstring;
     var demoRegion = html.match(/<codepen\-demo\s[^>]*>(.*?)<\/codepen\-demo>/gs);
 
     if (demoRegion && demoRegion.length) {
       window.pens = {}
-      let newHtml = html;
+      var newHtml = html;
       demoRegion.forEach((demo, i) => {
         var HTML = /```html\n(.*(?:\n(?!```$).*)*)\n```/gm.exec(demo);
         if (HTML && HTML.length) {
@@ -44,8 +42,8 @@ const plugin = function (hook, vm) {
 
         // data-*
         // (data-js=")((?:(?!\/>|>|"|\'|\s).)+)
-        const jsLink = /(data-js=")((?:(?!\/>|>|"|\'|\s).)+)/g.exec(demo);
-        const cssLink = /(data-css=")((?:(?!\/>|>|"|\'|\s).)+)/g.exec(demo);
+        var jsLink = /(data-js=")((?:(?!\/>|>|"|\'|\s).)+)/g.exec(demo);
+        var cssLink = /(data-css=")((?:(?!\/>|>|"|\'|\s).)+)/g.exec(demo);
 
         var data = {
           html: HTML,
@@ -72,9 +70,6 @@ const plugin = function (hook, vm) {
         if (cssLink && cssLink.length === 3) {
           data.css_external = cssLink[2]
         }
-
-        // Quotes will screw up the JSON
-        // JSONstring = JSON.stringify(data); //.replace(/"/g, "&​quot;").replace(/'/g, "&apos;");
 
         if (HTML.length || CSS.length || JS.length) {
           window.pens[i] = data;
