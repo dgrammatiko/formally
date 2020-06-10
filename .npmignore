@@ -7,12 +7,10 @@
 .eslintrc.cjs
 # Folders
 docs
-docs_public
 tests
 # Files
 jest-puppeteer.config.js
 jest.config.js
-rollup.config.js
 renovate.json
 README.md
 build.mjs

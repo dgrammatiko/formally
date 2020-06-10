@@ -1,5 +1,4 @@
 import babel from 'rollup-plugin-babel';
-import commonjs from '@rollup/plugin-commonjs';
 import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
@@ -25,7 +24,6 @@ const plugins = {
   esm: [],
   iife: [
     resolve(),
-    commonjs(),
     babel({
       externalHelpers: false,
       sourceMap: false,
@@ -89,7 +87,7 @@ Recurs('src', ['!*.js', 'src/formvalidatorbase.js', 'src/defaults.js', 'src/util
   });
 
 
-Recurs('src', ['!*.html', ''])
+Recurs('src', ['!**/*.html', ''])
   .then((filesRc) => {
     filesRc.forEach((file) => {
       const output = file.replace('src', 'dist');

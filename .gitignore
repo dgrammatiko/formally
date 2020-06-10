@@ -1,5 +1,4 @@
-node_modules
-docs/node_modules
 .DS_Store
-docs_public
 .vscode
+node_modules
+docs_public
