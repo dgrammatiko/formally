@@ -77,36 +77,34 @@ const execRollup = async function (file, setting) {
 
   const bundle = await rollup.rollup(ppp);
   await bundle.write(ppp.output);
+  // Get a copy in the docs
+  FsExtra.copy(ppp.output.file, `docs/${ppp.output.file}`)
 
   // eslint-disable-next-line no-console
   console.log(`Generated: ${ppp.output.file}`);
-  // console.log(`Generated: ${ppp.output.file}.gz`);
-  // console.log(`Generated: ${ppp.output.file}.br`);
-  // eslint-disable-next-line no-console
   console.log('#############################');
 };
 
 Recurs('src', ['!*.js', 'src/formvalidatorbase.js', 'src/defaults.js', 'src/utils.js'])
   .then((filesRc) => {
-    filesRc.forEach(function (file) { settings.forEach(function (setting) { execRollup(file, setting); }); },
-      (error) => {
-        // eslint-disable-next-line no-console
-        console.error(error.formatted);
-      }
-    );
+    filesRc.forEach(file => {
+      settings.forEach(setting => {
+        execRollup(file, setting);
+      });
+    });
   });
 
 
-Recurs('src', ['!**/*.html', ''])
-  .then((filesRc) => {
-    filesRc.forEach((file) => {
-      const output = file.replace('src', 'dist');
-      FsExtra.mkdirsSync(path.dirname(output));
-      FsExtra.copyFileSync(file, output);
-    },
-      (error) => {
-        // eslint-disable-next-line no-console
-        console.error(error.formatted);
-      }
-    );
-  });
+// Recurs('src', ['!**/*.html', ''])
+//   .then((filesRc) => {
+//     filesRc.forEach((file) => {
+//       const output = file.replace('src', 'dist');
+//       FsExtra.mkdirsSync(path.dirname(output));
+//       FsExtra.copyFileSync(file, output);
+//     },
+//       (error) => {
+//         // eslint-disable-next-line no-console
+//         console.error(error.formatted);
+//       }
+//     );
+//   });
