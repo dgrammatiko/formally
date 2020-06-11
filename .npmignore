@@ -1,16 +1,16 @@
 .vscode
 .github
+.nvmrc
 .babelrc
 .eslintignore
 .prettierrc
-.eleventy.cjs
 .eslintrc.cjs
 # Folders
 docs
 tests
 # Files
-jest-puppeteer.config.js
-jest.config.js
+jest.config.cjs
+jpuppeteer.conf.cjs
 renovate.json
 README.md
 build.mjs

@@ -1,6 +1,6 @@
 {
   "name": "@dgrammatiko/formally",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Form validation leveraging the platform",
   "main": "src/formally.js",
   "type": "module",
