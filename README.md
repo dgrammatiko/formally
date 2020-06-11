@@ -2,7 +2,6 @@
 
 ![Formally logo](formally.svg)
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dgrammatiko/formally/Basic?style=for-the-badge)
-
+![.github/workflows/basic.yml](https://github.com/dgrammatiko/formally/workflows/.github/workflows/basic.yml/badge.svg)
 
 works!
