@@ -8,7 +8,7 @@
     "build": "node build.mjs",
     "lint": "npx eslint src/.",
     "start": "node_modules/.bin/serves docs",
-    "test": "JEST_PUPPETEER_CONFIG=jpuppeteer.conf.cjs node_modules/.bin/jest",
+    "test": "JEST_PUPPETEER_CONFIG=jpuppeteer.conf.cjs node_modules/.bin/jest --runInBand",
     "autoprefix:upd": "npx browserslist@latest --update-db",
     "docs": "node_modules/.bin/serve docs"
   },
