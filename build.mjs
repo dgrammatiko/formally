@@ -2,15 +2,15 @@ import rollup from 'rollup';
 import terser from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import pkg from '@rollup/plugin-babel';
-const { babel } = pkg;
+const {babel} = pkg;
 import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
 import Recurs from 'recursive-readdir';
-import { brotliCompressSync } from 'zlib';
+import {brotliCompressSync} from 'zlib';
 
 const commonPlugins = [
-  terser.terser(),
+  terser.terser()
   // // GZIP compression as .gz files
   // gzipPlugin(),
   // // Brotil compression as .br files
@@ -39,20 +39,22 @@ const plugins = {
           {
             modules: false,
             targets: {
-              browsers: ['ie 11'],
-            },
-          },
-        ],
-      ],
-    }),
+              browsers: ['ie 11']
+            }
+          }
+        ]
+      ]
+    })
   ]
 };
 
 const settings = ['esm', 'iife'];
 
-const execRollup = async function (file, setting) {
+const execRollup = async function(file, setting) {
   const name = setting === 'esm' ? null : 'FormValidator';
-  const output = `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.esm.min.js' : '.iife.min.js')}`;
+  const output = `dist/${file
+    .replace('src/', '')
+    .replace('.js', setting === 'esm' ? '.esm.min.js' : '.iife.min.js')}`;
   const ppp = {
     input: file,
     output: {
@@ -73,22 +75,25 @@ const execRollup = async function (file, setting) {
   const bundle = await rollup.rollup(ppp);
   await bundle.write(ppp.output);
   // Get a copy in the docs
-  FsExtra.copy(ppp.output.file, `docs/${ppp.output.file}`)
+  FsExtra.copy(ppp.output.file, `docs/${ppp.output.file}`);
 
   // eslint-disable-next-line no-console
   console.log(`Generated: ${ppp.output.file}`);
   console.log('#############################');
 };
 
-Recurs('src', ['!*.js', 'src/formvalidatorbase.js', 'src/defaults.js', 'src/utils.js'])
-  .then((filesRc) => {
-    filesRc.forEach(file => {
-      settings.forEach(setting => {
-        execRollup(file, setting);
-      });
+Recurs('src', [
+  '!*.js',
+  'src/formvalidatorbase.js',
+  'src/defaults.js',
+  'src/utils.js'
+]).then(filesRc => {
+  filesRc.forEach(file => {
+    settings.forEach(setting => {
+      execRollup(file, setting);
     });
   });
-
+});
 
 // Recurs('src', ['!**/*.html', ''])
 //   .then((filesRc) => {
@@ -103,3 +108,5 @@ Recurs('src', ['!*.js', 'src/formvalidatorbase.js', 'src/defaults.js', 'src/util
 //       }
 //     );
 //   });
+
+FsExtra.copy('node_modules/bonsai.css/dist/bonsai.min.css', 'docs/assets/bonsai.min.css');
