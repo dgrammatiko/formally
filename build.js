@@ -1,16 +1,16 @@
 import rollup from 'rollup';
-import terser from 'rollup-plugin-terser';
-import resolve from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import pkg from '@rollup/plugin-babel';
 const { babel } = pkg;
 import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
 import Recurs from 'recursive-readdir';
-import { brotliCompressSync } from 'zlib';
+// import { brotliCompressSync } from 'zlib';
 
 const commonPlugins = [
-  terser.terser(),
+  terser(),
   // // GZIP compression as .gz files
   // gzipPlugin(),
   // // Brotil compression as .br files
@@ -24,7 +24,7 @@ const commonPlugins = [
 const plugins = {
   esm: [],
   iife: [
-    resolve({
+    nodeResolve({
       browser: true,
       modulesOnly: true
     }),
