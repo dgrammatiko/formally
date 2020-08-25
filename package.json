@@ -51,7 +51,7 @@
     "rollup-plugin-gzip": "2.5.0",
     "rollup-plugin-terser": "7.0.0",
     "serve": "11.3.2",
-    "@std/esm": "^0.26.0"
+    "@std/esm": "0.26.0"
   },
   "dependencies": {}
 }
