@@ -5,7 +5,7 @@
   "main": "src/formally.js",
   "type": "module",
   "scripts": {
-    "build": "node build.mjs",
+    "build": "node -r @std/esm build.mjs",
     "lint": "npx eslint src/.",
     "start": "node_modules/.bin/serves docs",
     "test": "JEST_PUPPETEER_CONFIG=jpuppeteer.conf.cjs node_modules/.bin/jest --runInBand",
@@ -50,7 +50,8 @@
     "rollup": "1.27.14",
     "rollup-plugin-gzip": "2.5.0",
     "rollup-plugin-terser": "7.0.0",
-    "serve": "11.3.2"
+    "serve": "11.3.2",
+    "@std/esm": "^0.26.0"
   },
   "dependencies": {}
 }
