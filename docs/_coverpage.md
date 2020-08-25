@@ -10,5 +10,5 @@ Do all your work in the html markup and let the Formally do the weird javascript
 
 For most cases `zero`, 0, `nada` lines of javascript are required!
 
-[GitHub](https://github.com/docsifyjs/docsify/)
+[GitHub](https://github.com/dgrammatiko/formally/)
 [Get Started](/README.md)
