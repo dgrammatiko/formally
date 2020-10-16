@@ -33,9 +33,9 @@
   },
   "homepage": "https://github.com/dgrammatiko/formally#readme",
   "devDependencies": {
-    "@babel/core": "7.12.0",
-    "@babel/preset-env": "7.12.0",
-    "@babel/runtime-corejs2": "7.12.0",
+    "@babel/core": "7.12.1",
+    "@babel/preset-env": "7.12.1",
+    "@babel/runtime-corejs2": "7.12.1",
     "@rollup/plugin-babel": "5.2.1",
     "@rollup/plugin-node-resolve": "9.0.0",
     "babel-preset-env": "1.7.0",
