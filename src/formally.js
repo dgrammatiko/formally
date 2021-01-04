@@ -8,11 +8,10 @@ class Formally {
   * @param {HTMLFormElement} form Expects a form element to act upon
   */
   constructor(form) {
-    this.form = form;
     if (!form || form.constructor.name !== 'HTMLFormElement') {
       throw new Error('Validator needs a form element');
     }
-
+    this.form = form;
     if (this.form.hasAttribute('novalidate')) {
       return;
     }
@@ -37,7 +36,7 @@ class Formally {
   }
 
   /**
-   * These methods was intentionally not implemented here so the class could be customized
+   * These methods were intentionally not implemented here so the class could be customized
    * to match the developer's particular needs
    */
   invalidFormNotification() { /** Throws an alert if the form is invalid */ }
@@ -47,8 +46,8 @@ class Formally {
   /**
    * This method will check the validity of the element
    * Expects the element to be at event.target
-   * 
-   * @param {{} || HTMLElement} event The event that initiated this action 
+   *
+   * @param {{} || HTMLElement} event The event that initiated this action
    *                                   or the element to be validated
    */
   validateFormElement(event) {
@@ -84,11 +83,11 @@ class Formally {
    * @param {formElement} input the element
    * @param {string} type the element type
    * @param {{}} validity the validity object
-   * 
+   *
    * @returns {string || null}
-   * 
+   *
    * @example
-   * <input 
+   * <input
    *        data-value-missing="Text for error triggered when the input cannot be empty"
    *        data-type-mismatch="The input was number but the user inserted text"
    *        data-pattern-mismatch="The input value doesnt satisfy the pattern provided"
@@ -98,7 +97,7 @@ class Formally {
    *        data-range-underflow="The input value is samller than min"
    *        data-range-overflow="The input value is biggger than max"
    *        data-step-mismatch="The input step wasn't valid"
-   * 
+   *
    * Setting a data-custom-error will render the field ALWAYS invalid!!!!
    */
   getCustomMessage(input, type, validity) {
@@ -131,7 +130,7 @@ class Formally {
       if (this.notify && typeof this.notify === 'function') {
         this.notify(formElement, valid);
       }
-      if (typeof firstInvalid !== 'string' && !valid) {
+      if (typeof firstInvalid === 'string' && !valid) {
         firstInvalid = formElement;
       }
     });
@@ -196,11 +195,11 @@ class Formally {
   /**
    * Method that will reset the functionality of the passed element
    * Use this to set a custom validator
-   *  
+   *
    * @param {nodeElement} formElement the element
    */
   attachElement(formElement) {
-    // Early ruturn for not qualifying elements 
+    // Early ruturn for not qualifying elements
     if (formElement.hasAttribute('disabled') ||
       (
         typeof formElement.dataset.allowValidation !== 'undefined'

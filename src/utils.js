@@ -1,6 +1,6 @@
 /**
  * Method that returns a unique string
- * 
+ *
  * @return {string} Can be used for unique id's
  */
 /* eslint no-undef: 0 */
@@ -15,7 +15,7 @@ export const guid = () => {
 };
 
 /**
- * Method to check is passive option is supported
+ * Method to check if passive option is supported
  *
  * @return {boolean}
  */
