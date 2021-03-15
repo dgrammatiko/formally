@@ -123,13 +123,12 @@ export class Formally extends Base {
    */
   invalidFormNotification() {
     // Example of an alert
-    if (this.form.dataset.invalidFormAlert) {
-      alert('Please correct the invalid iputs');
-    }
+    // if (this.form.dataset.invalidFormAlert) {
+    // alert('Please correct the invalid iputs');
+    // }
     return;
   }
 }
-
 
 window.Formally = new WeakMap();
 
@@ -149,4 +148,3 @@ submitters.forEach(submit => {
     }
   });
 });
-

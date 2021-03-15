@@ -5,7 +5,7 @@ class Formally {
   /**
   * Constructor
   *
-  * @param {HTMLFormElement} form Expects a form element to act upon
+  * @param {HTMLFormElement} form
   */
   constructor(form) {
     if (!form || form.constructor.name !== 'HTMLFormElement') {
@@ -16,73 +16,72 @@ class Formally {
       return;
     }
 
-    // Options through data-*
-    // Eg: for validClass the attribute will be data-valid-class
-    this.options = defaultSettings;
-
-    // The class instance is accesible at: form.Formally
-    this.form.Formally = this;
-
     this.passiveSupported = uaSupportsPassive();
     this.elementsForValidation = [];
     this.validateFormElement = this.validateFormElement.bind(this);
     this.attachElement = this.attachElement.bind(this);
-    this.elementInit = this.elementInit.bind(this);
-    this.notify = this.notify.bind(this);
-    this.invalidFormNotification = this.invalidFormNotification.bind(this);
-    this.debounced = debounce(99, this.validateFormElement);
+    this.debounced = debounce(2000, this.validateFormElement);
 
-    this.init();
+    // Load the default options
+    this.options = defaultSettings;
+    // Use any of the options provided through data-*
+    if (this.form.dataset) {
+      for (const data in this.form.dataset) {
+        if (Object.prototype.hasOwnProperty.call(this.options, data)) {
+          if (data === 'indicator' || data === 'invalidFormAlert') {
+            this.options[data] = this.form.dataset[data] === 'true' ? true : false;
+          } else {
+            this.options[data] = this.form.dataset[data];
+          }
+        }
+      }
+    }
+
+    [].slice.call(this.form.elements).forEach((formElement) => {
+      // Valid elements: INPUT, SELECT, TEXTAREA, BUTTON, OUTPUT, FIELDSET
+      // & Web Components implementing formInternals
+      if (formElement.hasAttribute('disabled') || formElement.tagName === 'FIELDSET') {
+        return;
+      }
+
+      this.elementsForValidation.push(formElement);
+      formElement.addEventListener('blur', this.validateFormElement, this.passiveSupported ? { passive: true } : true);
+      formElement.addEventListener('change', this.validateFormElement, this.passiveSupported ? { passive: true } : true);
+      // Do not interrupt users as they type!!!
+      formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
+
+      if (this.options.indicator && this.elementInit && typeof this.elementInit === 'function') {
+        this.elementInit(formElement);
+      }
+    });
   }
-
-  /**
-   * These methods were intentionally not implemented here so the class could be customized
-   * to match the developer's particular needs
-   */
-  invalidFormNotification() { /** Throws an alert if the form is invalid */ }
-  notify() { /** This method updates the notification element text */ }
-  elementInit() { /** This method creates the required element for the notification */ }
 
   /**
    * This method will check the validity of the element
    * Expects the element to be at event.target
    *
-   * @param {{} || HTMLElement} event The event that initiated this action
-   *                                   or the element to be validated
+   * @param {{} || HTMLElement} event
    */
   validateFormElement(event) {
     let formElement = null;
-    if (event && event.target) {
+    if (event && event.target && event.target.form === this.form) {
       formElement = event.target;
     } else {
-      formElement = event;
+      throw new Error('The element needs to be a children of a form element');
     }
 
-    if (!formElement) {
-      throw new Error('Method formElementValidate needs a valid event.target or a form element');
-    }
-
-    // Custom validators are set through formElement.FormallyCustomValidator
-    if (Object.prototype.hasOwnProperty.call(formElement, 'FormallyCustomValidator')
-      && typeof formElement.FormallyCustomValidator === 'function') {
-      formElement.FormallyCustomValidator();
-      if (this.notify && typeof this.notify === 'function') {
-        this.notify(formElement, formElement.validity.valid);
-      }
-    } else {
-      formElement.checkValidity();
-      if (this.notify && typeof this.notify === 'function') {
-        this.notify(formElement, formElement.validity.valid);
-      }
+    formElement.checkValidity();
+    if (this.notify && typeof this.notify === 'function') {
+      this.notify(formElement, formElement.validity.valid);
     }
   }
 
   /**
    * Method to get the elements custom error messages
    *   Requires this.indicator to be true
-   * @param {formElement} input the element
-   * @param {string} type the element type
-   * @param {{}} validity the validity object
+   * @param {formElement} input
+   * @param {string} type
+   * @param {{}} validity
    *
    * @returns {string || null}
    *
@@ -121,78 +120,6 @@ class Formally {
   }
 
   /**
-   * Shortcut to get the validity of the form.
-   */
-  isValid() {
-    let firstInvalid = 'i';
-    this.elementsForValidation.forEach((formElement) => {
-      const valid = formElement.checkValidity();
-      if (this.notify && typeof this.notify === 'function') {
-        this.notify(formElement, valid);
-      }
-      if (typeof firstInvalid === 'string' && !valid) {
-        firstInvalid = formElement;
-      }
-    });
-
-    if (this.form.checkValidity()) {
-      return true;
-    } else {
-      if (this.invalidFormNotification && typeof this.invalidFormNotification === 'function') {
-        this.invalidFormNotification();
-      }
-
-      if (typeof firstInvalid !== 'string') {
-        firstInvalid.focus();
-      }
-      return false;
-    }
-  }
-
-  /**
-   * Method that initiates the behaviours
-   */
-  init() {
-    /**
-     * Use any of the options provided through data-*
-     */
-    if (this.form.dataset) {
-      for (const data in this.form.dataset) {
-        if (Object.prototype.hasOwnProperty.call(this.form.Formally.options, data)) {
-          if (data === 'indicator' || data === 'invalidFormAlert') {
-            this.form.Formally.options[data] = this.form.dataset[data] === 'true' ? true : false;
-          } else {
-            this.form.Formally.options[data] = this.form.dataset[data];
-          }
-        }
-      }
-    }
-
-    [].slice.call(this.form.elements).forEach((formElement) => {
-      // Valid elements: INPUT, SELECT, TEXTAREA, BUTTON, OUTPUT, FIELDSET
-      if (
-        formElement.hasAttribute('disabled')
-        || (
-          typeof formElement.dataset.allowValidation !== 'undefined'
-          && formElement.dataset.allowValidation === 'true'
-        )
-        || formElement.tagName === 'FIELDSET'
-      ) {
-        return;
-      }
-
-      this.elementsForValidation.push(formElement);
-      formElement.addEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : true);
-      formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
-      formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
-
-      if (this.options.indicator && this.elementInit && typeof this.elementInit === 'function') {
-        this.elementInit(formElement);
-      }
-    });
-  }
-
-  /**
    * Method that will reset the functionality of the passed element
    * Use this to set a custom validator
    *
@@ -200,24 +127,20 @@ class Formally {
    */
   attachElement(formElement) {
     // Early ruturn for not qualifying elements
-    if (formElement.hasAttribute('disabled') ||
-      (
-        typeof formElement.dataset.allowValidation !== 'undefined'
-        && formElement.dataset.allowValidation === 'true'
-      )
-      || !formElement.willValidate
-    ) {
+    if (formElement.hasAttribute('disabled') || !formElement.willValidate) {
       return;
     }
 
     // Remove any existing listeners
-    formElement.removeEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : true);
-    formElement.removeEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
+    formElement.removeEventListener('blur', this.validateFormElement, this.passiveSupported ? { passive: true } : true);
+    formElement.removeEventListener('change', this.validateFormElement, this.passiveSupported ? { passive: true } : true);
+    // Do not interrupt users as they type!!!
     formElement.removeEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
 
     // Add the needed listeners
-    formElement.addEventListener('blur', this.debounced, this.passiveSupported ? { passive: true } : true);
-    formElement.addEventListener('change', this.debounced, this.passiveSupported ? { passive: true } : true);
+    formElement.addEventListener('blur', this.validateFormElement, this.passiveSupported ? { passive: true } : true);
+    formElement.addEventListener('change', this.validateFormElement, this.passiveSupported ? { passive: true } : true);
+    // Do not interrupt users as they type!!!
     formElement.addEventListener('input', this.debounced, this.passiveSupported ? { passive: true } : true);
 
     if (this.options.indicator && this.elementInit && typeof this.elementInit === 'function') {

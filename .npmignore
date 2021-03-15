@@ -1,10 +1,4 @@
-.vscode
-.github
-.nvmrc
-.babelrc
-.eslintignore
-.prettierrc
-.eslintrc.cjs
+.*
 # Folders
 docs
 tests
@@ -12,6 +6,5 @@ tests
 jest.config.cjs
 jpuppeteer.conf.cjs
 renovate.json
-README.md
 build.mjs
 formally.svg

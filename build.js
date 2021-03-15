@@ -7,10 +7,12 @@ import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
 import Recurs from 'recursive-readdir';
+import filesize from 'rollup-plugin-filesize';
 // import { brotliCompressSync } from 'zlib';
 
 const commonPlugins = [
   terser(),
+  filesize(),
   // // GZIP compression as .gz files
   // gzipPlugin(),
   // // Brotil compression as .br files
@@ -74,10 +76,6 @@ const execRollup = async function (file, setting) {
   await bundle.write(ppp.output);
   // Get a copy in the docs
   FsExtra.copy(ppp.output.file, `docs/${ppp.output.file}`)
-
-  // eslint-disable-next-line no-console
-  console.log(`Generated: ${ppp.output.file}`);
-  console.log('#############################');
 };
 
 Recurs('src', ['!*.js', 'src/formvalidatorbase.js', 'src/defaults.js', 'src/utils.js'])

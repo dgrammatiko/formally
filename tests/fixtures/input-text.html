@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Validate-4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta2/css/bootstrap.min.css"
+        integrity="sha512-aqT9YD5gLuLBr6ipQAS+72o5yHKzgZbGxEh6iY8lW/r6gG14e2kBTAJb8XrxzZrMOgSmDqtLaF76T0Z6YY2IHg=="
+        crossorigin="anonymous" />
+    <style>
+        body {
+            padding: 4rem
+        }
+    </style>
+</head>
+
+<body>
+    <section class=wrapper>
+        <form data-valid-class="is-valid" data-invalid-class="is-invalid" data-invalid-form-alert="false"
+            data-indicator="true" data-indicator-position="after" data-indicator-class="invalid-feedback"
+            data-indicator-element="span" data-invalid-form="Invalid form">
+
+            <div class="mb-3">
+                <label for="text">Text input</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="text"
+                    placeholder="Required example text"
+                    minlength="5"
+                    maxlength="10"
+                    required
+                    value=""
+                    pattern="^[a-z]+$"
+                    data-custom-Error="Custom Error"
+                    data-value-missing="Value Missing"
+                    data-pattern-mismatch="Pattern Missmatch"
+                    data-too-long="Too Long"
+                    data-too-short="Too Short"
+                >
+            </div>
+
+            <div class="mb-3">
+                <div class="form-group">
+                    <button type=submit class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </section>
+
+    <script src="/dist/bootstrap5/bootstrap5.esm.min.js" type="module"></script>
+</body>
+
+</html>
