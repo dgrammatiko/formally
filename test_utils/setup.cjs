@@ -11,9 +11,10 @@ module.exports = async () => {
         dumpio: true,
         headless: true, //process.env.HEADLESS !== 'false',
         slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
-        devtools: true,
-        product: 'firefox',
-        defaultViewport: {width: 1920, height: 1080},
+        devtools: false,
+        // product: 'firefox',    // "postinstall": "PUPPETEER_PRODUCT=firefox npm i puppeteer"
+        // defaultViewport: {width: 1920, height: 1080},
+        defaultViewport: null,
         args: [
           '--no-sandbox',
           // '--single-process',
@@ -21,7 +22,7 @@ module.exports = async () => {
           '--disable-setuid-sandbox',
           '--disable-infobars',
           '--no-first-run',
-          // `--window-size=${options.width || 1280},${options.height || 800}`,
+          `--window-size=1280,800`,
           '--window-position=0,0',
           '--ignore-certificate-errors',
           '--ignore-certificate-errors-skip-list',

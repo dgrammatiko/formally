@@ -13,6 +13,30 @@
         body {
             padding: 4rem
         }
+
+/* Remove controls from Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Re-applies the controls on :hover and :focus */
+input[type="number"]:hover,
+input[type="number"]:focus {
+  -moz-appearance: number-input;
+}
+
+/* Remove controls from Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Removes leftover margin */
+}
+
+/* Adds a box around the numeric value in Safari and Chrome */
+input[type=number]::-webkit-textfield-decoration-container {
+  border: 1px #ccc solid;
+  background: #efefef;
+}
     </style>
 </head>
 
@@ -28,7 +52,6 @@
                     type="number"
                     class="form-control"
                     id="number"
-                    placeholder="0000"
                     minlength="5"
                     maxlength="10"
                     required
@@ -36,10 +59,12 @@
                     min="5"
                     max="10"
                     step="2"
-                    pattern="12345"
+                    pattern="[0-9]*"
                     data-custom-Error="Custom Error"
                     data-value-missing="Value Missing"
                     data-pattern-mismatch="Pattern Missmatch"
+                    data-type-mismatch="Type Mismatch"
+                    data-bad-input="Bad Input"
                     data-too-long="Too Long"
                     data-too-short="Too Short"
                 >
@@ -54,7 +79,7 @@
         </form>
     </section>
 
-    <script src="/dist/bootstrap5/nocode-bootstrap5.esm.min.js" type="module"></script>
+    <script src="/dist/bootstrap5/bootstrap5.esm.min.js" type="module"></script>
 </body>
 
 </html>

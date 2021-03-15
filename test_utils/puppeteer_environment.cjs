@@ -3,7 +3,7 @@ const { readFile } = require('fs/promises');
 const { exec } = require('child_process');
 const os = require('os');
 const path = require('path');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const NodeEnvironment = require('jest-environment-node');
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
@@ -31,8 +31,8 @@ class PuppeteerEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    await super.teardown();
     this.server.kill();
+    await super.teardown();
   }
 
   runScript(script) {

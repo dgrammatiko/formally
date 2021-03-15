@@ -1,5 +1,19 @@
 import { defaultSettings } from '../src/defaults.js'
+/**
 
+validityState.valueMissing
+validityState.typeMismatch
+validityState.patternMismatch
+validityState.tooLong
+validityState.tooShort
+validityState.rangeUnderflow
+validityState.rangeOverflow
+validityState.stepMismatch
+validityState.badInput
+validityState.valid
+validityState.customError
+
+ */
 describe('Form', () => {
   let browser = global.__BROWSER__;
   let page
