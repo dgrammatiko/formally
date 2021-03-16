@@ -13,11 +13,12 @@ const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
 class PuppeteerEnvironment extends NodeEnvironment {
   constructor(config) {
     super(config);
-    this.server = exec('./node_modules/.bin/serve -p 8888', {async:true});
   }
 
   async setup() {
     await super.setup();
+
+    this.server = exec('./node_modules/.bin/serve -p 8888', {async:true});
     // get the wsEndpoint
     const wsEndpoint = await readFile(path.join(DIR, 'wsEndpoint'), { encoding: 'utf8'});
     if (!wsEndpoint) {
@@ -31,9 +32,10 @@ class PuppeteerEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    // this.server.kill();
-    this.server.kill('SIGINT')
-    await super.teardown();
+    await super.teardown();//SIGTTOU
+    // this.server.kill('SIGTTIN');
+    this.server.kill('SIGINT');
+    // this.server.kill('SIGTERM');
   }
 
   runScript(script) {
