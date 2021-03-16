@@ -31,7 +31,8 @@ class PuppeteerEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    this.server.kill();
+    // this.server.kill();
+    this.server.kill('SIGINT')
     await super.teardown();
   }
 
