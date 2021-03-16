@@ -5,6 +5,7 @@
   "main": "src/formally.js",
   "type": "module",
   "scripts": {
+    "serve": "node ./node_modules/.bin/serve -p 8888",
     "build": "node build.js",
     "lint": "npx eslint src/.",
     "start": "node_modules/.bin/serve docs",
@@ -42,6 +43,7 @@
     "cross-env": "6.0.3",
     "fs-extra": "8.1.0",
     "jest": "^26.6.3",
+    "jest-dev-server": "^4.4.0",
     "prettier": "1.19.1",
     "puppeteer": "^8.0.0",
     "recursive-readdir": "2.2.2",
