@@ -45,7 +45,7 @@ describe('NUMBER: Pattern missmatch, Invalid form check [isValid]', () => {
                 window.Formally.get(form).isValid();
                 const element = document.querySelector('#number');
                 const msg = element.parentNode.querySelector('[aria-live="polite"]');
-                console.log({error: msg.innerText})
+
                 return msg.innerText;
             });
 
