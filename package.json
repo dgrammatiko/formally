@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/dgrammatiko/formally#readme",
   "devDependencies": {
-    "@babel/core": "7.13.13",
+    "@babel/core": "7.13.14",
     "@babel/preset-env": "7.13.12",
     "@babel/runtime-corejs2": "7.13.10",
     "@rollup/plugin-babel": "5.3.0",
