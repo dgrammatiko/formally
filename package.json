@@ -46,7 +46,7 @@
     "prettier": "1.19.1",
     "puppeteer": "10.1.0",
     "recursive-readdir": "2.2.2",
-    "rollup": "1.27.14",
+    "rollup": "1.32.1",
     "rollup-plugin-gzip": "2.5.0",
     "rollup-plugin-terser": "7.0.2",
     "serve": "12.0.0"
