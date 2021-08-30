@@ -44,7 +44,7 @@
     "jest": "27.1.0",
     "jest-puppeteer": "5.0.4",
     "prettier": "2.3.2",
-    "puppeteer": "10.1.0",
+    "puppeteer": "10.2.0",
     "recursive-readdir": "2.2.2",
     "rollup": "2.56.3",
     "rollup-plugin-gzip": "2.5.0",
