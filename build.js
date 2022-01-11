@@ -1,4 +1,4 @@
-import rollup from 'rollup';
+import { rollup } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import pkg from '@rollup/plugin-babel';
@@ -70,7 +70,7 @@ const execRollup = async function (file, setting) {
 
   FsExtra.mkdirsSync(path.dirname(output));
 
-  const bundle = await rollup.rollup(ppp);
+  const bundle = await rollup(ppp);
   await bundle.write(ppp.output);
   // Get a copy in the docs
   FsExtra.copy(ppp.output.file, `docs/${ppp.output.file}`)
