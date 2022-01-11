@@ -5,7 +5,7 @@
   "main": "src/formally.js",
   "type": "module",
   "scripts": {
-    "build": "node --experimental-modules build.js",
+    "build": "node build.js",
     "lint": "npx eslint src/.",
     "start": "node_modules/.bin/serve docs",
     "test": "JEST_PUPPETEER_CONFIG=jpuppeteer.conf.cjs node_modules/.bin/jest --runInBand",
