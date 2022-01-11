@@ -63,7 +63,7 @@ data-indicator-class="invalid-feedback">
 `data-indicator-class="invalid-feedback"` The class that will be toggled in the indicator element
 
 
-<codepen-demo data-css="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" data-js="https://formally-valid.info/dist/bootstrap4/nocode-bootstrap4.iife.min.js">
+<codepen-demo data-css="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" data-js="https://formally-valid.dgrammatiko.dev/dist/bootstrap4/nocode-bootstrap4.iife.min.js">
 
 ```html
 <form 
