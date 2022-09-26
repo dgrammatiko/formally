@@ -37,7 +37,7 @@
     "@babel/preset-env": "7.19.1",
     "@babel/runtime-corejs2": "7.19.2",
     "@rollup/plugin-babel": "5.3.1",
-    "@rollup/plugin-node-resolve": "13.3.0",
+    "@rollup/plugin-node-resolve": "14.1.0",
     "babel-preset-env": "1.7.0",
     "cross-env": "7.0.3",
     "fs-extra": "10.1.0",
