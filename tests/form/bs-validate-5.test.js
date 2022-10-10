@@ -5,7 +5,7 @@ describe(
     () => {
         beforeAll(async () => {
             jest.setTimeout(35000);
-            await page.goto(`${URL}/tests/fixtures/bs-validate-5.html`, { waitUntil: 'networkidle2' });
+            await page.goto(`http://localhost:8888/tests/fixtures/bs-validate-5.html`, { waitUntil: 'networkidle2' });
         }, timeout);
 
         it('Form should not have a novalidate attribute', async () => {
