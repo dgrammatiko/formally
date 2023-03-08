@@ -4,7 +4,7 @@ const { exec } = require('child_process');
 const os = require('os');
 const path = require('path');
 const puppeteer = require('puppeteer');
-const NodeEnvironment = require('jest-environment-node');
+const NodeEnvironment = require('jest-environment-node').TestEnvironment;
 const { setup: setupDevServer, teardown: teardownDevServer } = require('jest-dev-server')
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
 
@@ -21,8 +21,8 @@ class PuppeteerEnvironment extends NodeEnvironment {
     await super.setup();
     await setupDevServer({
       command: 'npm run serve',
-      launchTimeout: 50000,
-      port: 8888,
+      launchTimeout: 5000,
+      port: 8899,
     })
 
     // get the wsEndpoint
@@ -39,7 +39,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
   async teardown() {
     await super.teardown();
-    await teardownDevServer()
+    await teardownDevServer();
   }
 
   runScript(script) {
