@@ -6,16 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "serve": "node ./node_modules/.bin/serve -p 8899",
-    "builda": "node build.js",
+    "build": "node build.js",
     "lint": "npx eslint src/.",
-    "start": "node_modules/.bin/serve docs",
-    "test": "node_modules/.bin/jest  --runInBand --detectOpenHandles",
+    "test": "vitest",
+    "tests": "vitest",
     "autoprefix:upd": "npx browserslist@latest --update-db",
     "docs": "node_modules/.bin/serve docs",
-    "tests": "vitest",
     "coverage": "vitest run --coverage"
   },
   "repository": {
@@ -45,6 +41,7 @@
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
+    "@vitest/coverage-c8": "^0.29.2",
     "babel-preset-env": "1.7.0",
     "cross-env": "^7.0.3",
     "fs-extra": "^11.1.0",

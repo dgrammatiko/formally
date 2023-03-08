@@ -4,3 +4,4 @@ node_modules
 docs_public
 tests_copy
 ignore
+coverage
