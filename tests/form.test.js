@@ -24,21 +24,19 @@ describe('Form', () => {
   let page
 
   beforeAll(async () => {
-    server = await preview({ preview: { port: 3000 } })
+    server = await preview({ preview: { port: 5432 } })
     browser = await puppeteer.launch()
     page = await browser.newPage()
   })
 
   afterAll(async () => {
     await browser.close()
-    await new Promise((resolve, reject) => {
-      server.httpServer.close(error => error ? reject(error) : resolve())
-    })
+    await new Promise((resolve, reject) => server.httpServer.close(error => error ? reject(error) : resolve()))
   })
 
   describe('Form No validate', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5173/tests/fixtures/form-no-validate.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:5432/tests/fixtures/form-no-validate.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
     });
 
@@ -61,7 +59,7 @@ describe('Form', () => {
 
   describe('Form Validate, default options', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5173/tests/fixtures/form-validate-1.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:5432/tests/fixtures/form-validate-1.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
     });
 
@@ -99,7 +97,7 @@ describe('Form', () => {
 
   describe('Form Validate, options from data attributes', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5173/tests/fixtures/form-validate-2.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:5432/tests/fixtures/form-validate-2.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
     });
 
@@ -137,7 +135,7 @@ describe('Form', () => {
 
    describe('Form Validate, Valid form check [isValid]', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5173/tests/fixtures/form-validate-3.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:5432/tests/fixtures/form-validate-3.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
     });
 

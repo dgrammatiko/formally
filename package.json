@@ -9,9 +9,7 @@
     "build": "node build.js",
     "lint": "npx eslint src/.",
     "test": "vitest",
-    "tests": "vitest",
-    "autoprefix:upd": "npx browserslist@latest --update-db",
-    "docs": "node_modules/.bin/serve docs",
+    "autoprefix": "npx browserslist@latest --update-db",
     "coverage": "vitest run --coverage"
   },
   "repository": {
@@ -54,7 +52,6 @@
     "rollup": "^3.18.0",
     "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-gzip": "^3.1.0",
-    "serve": "^14.2.0",
     "vite": "^4.0.0",
     "vitest": "^0.29.2"
   },
