@@ -1,54 +1,69 @@
-let page;
+import { afterAll, beforeEach, beforeAll, describe, expect, it, test } from 'vitest';
+import { preview } from 'vite';
+import puppeteer from 'puppeteer';
+
+let server
+let browser
+let page
 
 describe('NUMBER: Pattern missmatch, Invalid form check [isValid]', () => {
-        beforeAll(async () => {
-            page = await global.__BROWSER__.newPage();
-            await page.setViewport({ width: 600, height: 400 })
-            await page.goto(`${URL}/tests/fixtures/input-number.html`, { waitUntil: 'domcontentloaded' });
-        }, 10000);
+  beforeAll(async () => {
+    server = await preview({ preview: { port: 3000 } })
+    browser = await puppeteer.launch()
+    page = await browser.newPage()
+    await page.setViewport({ width: 600, height: 400 });
+    await page.goto(`http://localhost:5173/tests/fixtures/input-number.html`, { waitUntil: 'domcontentloaded' });
+  })
 
-        it('Form should not have a novalidate attribute', async () => {
-            const novalidate = await page.evaluate(() => {
-                const form = document.querySelector('form');
-                return form.hasAttribute('novalidate');
-            });
-            expect(novalidate).toBeFalsy();
-        });
+  afterAll(async () => {
+    await browser.close()
+    await new Promise((resolve, reject) => {
+      server.httpServer.close(error => error ? reject(error) : resolve())
+    })
+  })
 
-        it('Form should have a Formally object', async () => {
-            const FormallyObj = await page.evaluate(() => {
-                const form = document.querySelector('form');
-                return window.Formally.get(form);
-            });
+  it('Form should not have a novalidate attribute', async () => {
+      const novalidate = await page.evaluate(() => {
+          const form = document.querySelector('form');
+          return form.hasAttribute('novalidate');
+      });
+      expect(novalidate).toBeFalsy();
+  });
 
-            expect(FormallyObj).toBeTruthy();
-        });
+  it('Form should have a Formally object', async () => {
+      const FormallyObj = await page.evaluate(() => {
+          const form = document.querySelector('form');
+          return window.Formally.get(form);
+      });
 
-        it('Form should be invalid', async () => {
-            const isValid = await page.evaluate(() => {
-                form = document.querySelector('form');
-                return window.Formally.get(form).isValid();
-            });
+      expect(FormallyObj).toBeTruthy();
+  });
 
-            expect(isValid).toBeFalsy();
-        });
+  it('Form should be invalid', async () => {
+      const isValid = await page.evaluate(() => {
+          form = document.querySelector('form');
+          return window.Formally.get(form).isValid();
+      });
 
-        // it('Input number should have invalid message below', async () => {
-        //     await page.waitForSelector('#number', { visible: true })
-        //     await page.focus("#number");
-        //     await page.keyboard.type('aaa')
+      expect(isValid).toBeFalsy();
+  });
 
-        //     await page.focus('[type=submit]');
+  // it('Input number should have invalid message below', async () => {
+  //     await page.waitForSelector('#number', { visible: true })
+  //     await page.focus("#number");
+  //     await page.keyboard.type('aaa')
 
-        //     const label = await page.evaluate(() => {
-        //         form = document.querySelector('form');
-        //         window.Formally.get(form).isValid();
-        //         const element = document.querySelector('#number');
-        //         const msg = element.parentNode.querySelector('[aria-live="polite"]');
+  //     await page.focus('[type=submit]');
 
-        //         return msg.innerText;
-        //     });
+  //     const label = await page.evaluate(() => {
+  //         form = document.querySelector('form');
+  //         window.Formally.get(form).isValid();
+  //         const element = document.querySelector('#number');
+  //         const msg = element.parentNode.querySelector('[aria-live="polite"]');
 
-        //     expect(label).toBe('Value Missing'); // Chrome doesnt alow non numeric values
-        // }, 1000);
-    });
+  //         return msg.innerText;
+  //     });
+
+  //     expect(label).toBe('Value Missing'); // Chrome doesnt alow non numeric values
+  // }, 1000);
+});

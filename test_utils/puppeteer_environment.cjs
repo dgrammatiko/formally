@@ -20,7 +20,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
   async setup() {
     await super.setup();
     await setupDevServer({
-      command: 'npm run serve',
+      command: 'node ./node_modules/.bin/serve -p 8899',
       launchTimeout: 5000,
       port: 8899,
     })
