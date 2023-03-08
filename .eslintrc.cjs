@@ -1,8 +1,14 @@
 module.exports = {
   env: {
     es6: true,
-    node: true,
+    node: false,
     mocha: true
+  },
+  globals: {
+    alert: true,
+    document: true,
+    HTMLElement: true,
+    window: true,
   },
   extends: 'eslint:recommended',
   parserOptions: {
