@@ -1,8 +1,7 @@
-import rollup from 'rollup';
+import {rollup} from 'rollup';
 import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import pkg from '@rollup/plugin-babel';
-const { babel } = pkg;
+import { babel } from '@rollup/plugin-babel';
 import FsExtra from 'fs-extra';
 // import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
 import path from 'path';
@@ -34,7 +33,7 @@ const plugins = {
     babel({
       babelHelpers: 'bundled',
       sourceMap: false,
-      // exclude: 'node_modules/**',
+      exclude: 'node_modules/**',
       presets: [
         [
           '@babel/preset-env',
@@ -53,51 +52,25 @@ const plugins = {
 const settings = ['esm', 'iife'];
 
 const execRollup = async function (file, setting) {
-  const name = setting === 'esm' ? null : 'FormValidator';
-  const output = `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.esm.min.js' : '.iife.min.js')}`;
   const ppp = {
     input: file,
     output: {
       sourcemap: false,
       format: setting,
-      file: output
+      file: `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.esm.min.js' : '.iife.min.js')}`
     }
   };
 
-  if (name) {
-    ppp.output.name = name;
-  }
-
+  ppp.output.name = setting === 'esm' ? null : 'FormValidator';
   ppp.plugins = plugins[`${setting}`].concat(commonPlugins);
 
-  FsExtra.mkdirsSync(path.dirname(output));
+  FsExtra.mkdirsSync(path.dirname(ppp.output.file));
 
-  const bundle = await rollup.rollup(ppp);
+  const bundle = await rollup(ppp);
   await bundle.write(ppp.output);
   // Get a copy in the docs
   FsExtra.copy(ppp.output.file, `docs/${ppp.output.file}`)
 };
 
-Recurs('src', ['!*.js', 'src/formvalidatorbase.js', 'src/defaults.js', 'src/utils.js'])
-  .then((filesRc) => {
-    filesRc.forEach(file => {
-      settings.forEach(setting => {
-        execRollup(file, setting);
-      });
-    });
-  });
+Recurs('src', ['!*.js', 'src/defaults.js', 'src/utils.js']).then((filesRc) => filesRc.forEach(file => settings.forEach(setting => execRollup(file, setting))));
 
-
-// Recurs('src', ['!**/*.html', ''])
-//   .then((filesRc) => {
-//     filesRc.forEach((file) => {
-//       const output = file.replace('src', 'dist');
-//       FsExtra.mkdirsSync(path.dirname(output));
-//       FsExtra.copyFileSync(file, output);
-//     },
-//       (error) => {
-//         // eslint-disable-next-line no-console
-//         console.error(error.formatted);
-//       }
-//     );
-//   });

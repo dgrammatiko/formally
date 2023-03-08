@@ -15,31 +15,6 @@ export const guid = () => {
 };
 
 /**
- * Method to check if passive option is supported
- *
- * @return {boolean}
- */
-export const uaSupportsPassive = () => {
-  let isSupported = false;
-  try {
-    const options = {
-      get passive() {
-        isSupported = true;
-        return true;
-      }
-    };
-
-    window.addEventListener('test', null, options);
-    window.removeEventListener('test', null, options);
-  } catch (err) {
-    isSupported = false;
-    return false;
-  }
-
-  return isSupported;
-};
-
-/**
  * Initialize new store and apply all modules to the store.
  *
  * @param {number} delay The delay for the debounced function to be called

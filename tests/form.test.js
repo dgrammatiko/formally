@@ -51,8 +51,8 @@ describe('Form', () => {
             const form = await page.evaluate(() => {
                 return document.querySelector('form');
             });
-            const Formally = await page.evaluate(() => Formally.get(form));
-            expect(Formally).toBeUndefined();
+            const FormallyObj = await page.evaluate(() => window.Formally.get(form));
+            expect(FormallyObj).toBeUndefined();
         })
    }, 10000)
 
@@ -72,38 +72,26 @@ describe('Form', () => {
         });
 
         it('Form should have a Formally object', async () => {
-            const Formally = await page.evaluate(() => {
+            const FormallyObj = await page.evaluate(() => {
                 const form = document.querySelector('form');
-                return Formally.get(form);
+                return window.Formally.get(form);
             });
 
-            expect(Formally).toBeTruthy();
+            expect(FormallyObj).toBeTruthy();
         });
 
         it('Form should have a Formally property with default values', async () => {
-            const FormallyO = await page.evaluate(() => {
+            const FormallyObj = await page.evaluate(() => {
                 const form = document.querySelector('form');
-                const FormallyN = Formally.get(form);
+                const FormallyN = window.Formally.get(form);
                 return {
                     validClass: FormallyN.options.validClass,
                     invalidClass: FormallyN.options.invalidClass,
-                    indicator: FormallyN.options.indicator,
-                    indicatorElement: FormallyN.options.indicatorElement,
-                    indicatorPosition: FormallyN.options.indicatorPosition,
-                    indicatorClass: FormallyN.options.indicatorClass,
-                    invalidForm: FormallyN.options.invalidForm,
-                    invalidFormAlert: FormallyN.options.invalidFormAlert,
                 };
             });
 
-            expect(FormallyO.validClass).toBe(defaultSettings.validClass)
-            expect(FormallyO.invalidClass).toBe(defaultSettings.invalidClass)
-            expect(FormallyO.indicator).toBe(defaultSettings.indicator)
-            expect(FormallyO.indicatorElement).toBe(defaultSettings.indicatorElement)
-            expect(FormallyO.indicatorPosition).toBe(defaultSettings.indicatorPosition)
-            expect(FormallyO.indicatorClass).toBe(defaultSettings.indicatorClass)
-            expect(FormallyO.invalidForm).toBe(defaultSettings.invalidForm)
-            expect(FormallyO.invalidFormAlert).toBe(defaultSettings.invalidFormAlert)
+            expect(FormallyObj.validClass).toBe(defaultSettings.validClass)
+            expect(FormallyObj.invalidClass).toBe(defaultSettings.invalidClass)
         })
    }, 10000)
 
@@ -123,38 +111,26 @@ describe('Form', () => {
         });
 
         it('Form should have a Formally object', async () => {
-            const Formally = await page.evaluate(() => {
+            const FormallyObj = await page.evaluate(() => {
                 const form = document.querySelector('form');
-                return Formally.get(form);
+                return window.Formally.get(form);
             });
 
-            expect(Formally).toBeTruthy();
+            expect(FormallyObj).toBeTruthy();
         });
 
         it('Form should have a Formally.options property that differs from the default values', async () => {
-                const FormallyO = await page.evaluate(() => {
+            const FormallyObj = await page.evaluate(() => {
                 const form = document.querySelector('form');
-                const FormallyN = Formally.get(form);
+                const FormallyN = window.Formally.get(form);
                 return {
                     validClass: FormallyN.options.validClass,
                     invalidClass: FormallyN.options.invalidClass,
-                    indicator: FormallyN.options.indicator,
-                    indicatorElement: FormallyN.options.indicatorElement,
-                    indicatorPosition: FormallyN.options.indicatorPosition,
-                    indicatorClass: FormallyN.options.indicatorClass,
-                    invalidForm: FormallyN.options.invalidForm,
-                    invalidFormAlert: FormallyN.options.invalidFormAlert,
                 };
             });
 
-            expect(FormallyO.validClass).not.toBe(defaultSettings.validClass);
-            expect(FormallyO.invalidClass).not.toBe(defaultSettings.invalidClass);
-            expect(FormallyO.indicator).not.toBe(defaultSettings.indicator);
-            expect(FormallyO.indicatorElement).not.toBe(defaultSettings.indicatorElement);
-            expect(FormallyO.indicatorPosition).not.toBe(defaultSettings.indicatorPosition);
-            expect(FormallyO.indicatorClass).not.toBe(defaultSettings.indicatorClass);
-            expect(FormallyO.invalidForm).not.toBe(defaultSettings.invalidForm);
-            expect(FormallyO.invalidFormAlert).not.toBe(defaultSettings.invalidFormAlert);
+            expect(FormallyObj.validClass).not.toBe(defaultSettings.validClass);
+            expect(FormallyObj.invalidClass).not.toBe(defaultSettings.invalidClass);
         });
    }, 10000)
 
@@ -174,18 +150,18 @@ describe('Form', () => {
         });
 
         it('Form should have a Formally object', async () => {
-            const Formally = await page.evaluate(() => {
+            const FormallyObj = await page.evaluate(() => {
                 const form = document.querySelector('form');
-                return Formally.get(form);
+                return window.Formally.get(form);
             });
 
-            expect(Formally).toBeTruthy();
+            expect(FormallyObj).toBeTruthy();
         });
 
         it('Form should be valid', async () => {
             const isValid = await page.evaluate(() => {
                 form = document.querySelector('form');
-                return Formally.get(form).isValid();
+                return window.Formally.get(form).isValid();
             });
 
             expect(isValid).toBeTruthy();

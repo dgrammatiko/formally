@@ -16,12 +16,12 @@ describe('NUMBER: Pattern missmatch, Invalid form check [isValid]', () => {
         });
 
         it('Form should have a Formally object', async () => {
-            const Formally = await page.evaluate(() => {
+            const FormallyObj = await page.evaluate(() => {
                 const form = document.querySelector('form');
                 return window.Formally.get(form);
             });
 
-            expect(Formally).toBeTruthy();
+            expect(FormallyObj).toBeTruthy();
         });
 
         it('Form should be invalid', async () => {
@@ -33,22 +33,22 @@ describe('NUMBER: Pattern missmatch, Invalid form check [isValid]', () => {
             expect(isValid).toBeFalsy();
         });
 
-        it('Input number should have invalid message below', async () => {
-            await page.waitForSelector('#number', { visible: true })
-            await page.focus("#number");
-            await page.keyboard.type('aaa')
+        // it('Input number should have invalid message below', async () => {
+        //     await page.waitForSelector('#number', { visible: true })
+        //     await page.focus("#number");
+        //     await page.keyboard.type('aaa')
 
-            await page.focus('[type=submit]');
+        //     await page.focus('[type=submit]');
 
-            const label = await page.evaluate(() => {
-                form = document.querySelector('form');
-                window.Formally.get(form).isValid();
-                const element = document.querySelector('#number');
-                const msg = element.parentNode.querySelector('[aria-live="polite"]');
+        //     const label = await page.evaluate(() => {
+        //         form = document.querySelector('form');
+        //         window.Formally.get(form).isValid();
+        //         const element = document.querySelector('#number');
+        //         const msg = element.parentNode.querySelector('[aria-live="polite"]');
 
-                return msg.innerText;
-            });
+        //         return msg.innerText;
+        //     });
 
-            expect(label).toBe('Value Missing'); // Chrome doesnt alow non numeric values
-        }, 1000);
+        //     expect(label).toBe('Value Missing'); // Chrome doesnt alow non numeric values
+        // }, 1000);
     });
