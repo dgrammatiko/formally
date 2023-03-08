@@ -1,5 +1,5 @@
 import { debounce } from './utils.js';
-import { defaultSettings, defaultStates } from './defaults.js'
+import { defaultSettings, defaultStates } from './defaults.js';
 /**
  * The Class defaults, can be overriden through data-*
  *
@@ -41,7 +41,7 @@ class Formally {
     Array.from(this.form.elements).forEach((formElement) => this.modifyElement(formElement, 'add'));
 
     // Callback function to execute when mutations are observed
-    const mutationCallback = (mutations, observer) => {
+    const mutationCallback = (mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length > 0) {
           Array.from(this.form.elements).filter((element) => !this.elementsForValidation.includes(element)).forEach((element) => this.modifyElement(element, 'add'));
@@ -53,6 +53,7 @@ class Formally {
     };
 
     // Create an observer instance linked to the callback function
+    // eslint-disable-next-line no-undef
     this.observer = new MutationObserver(mutationCallback);
 
     // Start observing the target node for configured mutations
@@ -105,7 +106,7 @@ class Formally {
     if (!data) return customMessage;
     defaultStates.forEach((state) => {
       if (input.validity[state] === true && data[state]) {
-        customMessage = data[state]
+        customMessage = data[state];
       }
     });
 
