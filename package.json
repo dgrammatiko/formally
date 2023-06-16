@@ -46,7 +46,7 @@
     "jest": "29.5.0",
     "jest-puppeteer": "9.0.0",
     "prettier": "2.8.8",
-    "puppeteer": "20.7.1",
+    "puppeteer": "20.7.2",
     "recursive-readdir": "^2.2.3",
     "rimraf": "^5.0.0",
     "rollup": "^3.18.0",
