@@ -1,76 +1,50 @@
-import {rollup} from 'rollup';
-import terser from '@rollup/plugin-terser';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { babel } from '@rollup/plugin-babel';
-import FsExtra from 'fs-extra';
-// import gzipPlugin from 'rollup-plugin-gzip/dist-es/index.js';
-import path from 'path';
-import Recurs from 'recursive-readdir';
-import filesize from 'rollup-plugin-filesize';
-// import { brotliCompressSync } from 'zlib';
+import { rolldown } from "rolldown";
+import { mkdirSync, copyFileSync, readdirSync } from "node:fs";
+import path from "path";
 
-const commonPlugins = [
-  terser(),
-  filesize(),
-  // // GZIP compression as .gz files
-  // gzipPlugin(),
-  // // Brotil compression as .br files
-  // gzipPlugin({
-  //   customCompression: content =>
-  //     brotliCompressSync(Buffer.from(content)),
-  //   fileName: '.br',
-  // }),
-];
+const settings = ["esm", "iife"];
 
-const plugins = {
-  esm: [],
-  iife: [
-    nodeResolve({
-      browser: true,
-      modulesOnly: true
-    }),
-    // commonjs(),
-    babel({
-      babelHelpers: 'bundled',
-      sourceMap: false,
-      exclude: 'node_modules/**',
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            modules: false,
-            targets: {
-              browsers: ['defaults and supports es6-module', 'maintained node versions'],
-            },
-          },
-        ],
-      ],
-    }),
-  ]
-};
-
-const settings = ['esm', 'iife'];
-
-const execRollup = async function (file, setting) {
+const execRolldown = async function (file, setting) {
   const ppp = {
     input: file,
     output: {
       sourcemap: false,
       format: setting,
-      file: `dist/${file.replace('src/', '').replace('.js', setting === 'esm' ? '.esm.min.js' : '.iife.min.js')}`
-    }
+      minify: true,
+      file: `dist/${file.replace("src/", "").replace(".js", setting === "esm" ? ".esm.min.js" : ".iife.min.js")}`,
+    },
   };
 
-  ppp.output.name = setting === 'esm' ? null : 'FormValidator';
-  ppp.plugins = plugins[`${setting}`].concat(commonPlugins);
+  if (setting === "iife") {
+    ppp.output.name = "FormValidator";
+  }
 
-  FsExtra.mkdirsSync(path.dirname(ppp.output.file));
+  mkdirSync(path.dirname(ppp.output.file), { recursive: true });
 
-  const bundle = await rollup(ppp);
+  const bundle = await rolldown(ppp);
   await bundle.write(ppp.output);
   // Get a copy in the docs
-  FsExtra.copy(ppp.output.file, `docs/${ppp.output.file}`)
+  copyFileSync(ppp.output.file, `docs/${ppp.output.file}`);
 };
 
-Recurs('src', ['!*.js', 'src/defaults.js', 'src/utils.js']).then((filesRc) => filesRc.forEach(file => settings.forEach(setting => execRollup(file, setting))));
+const collectJs = (dir, out = []) => {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      collectJs(full, out);
+    } else if (entry.isFile() && entry.name.endsWith(".js")) {
+      out.push(full);
+    }
+  }
+  return out;
+};
 
+const filesRc = collectJs("src").filter(
+  (file) => !file.endsWith("defaults.js") && !file.endsWith("utils.js"),
+);
+await Promise.all(
+  filesRc.flatMap((file) => settings.map((setting) => execRolldown(file, setting))),
+);
+
+// Also build j-formally (needs punycode bundled)
+await Promise.all(settings.map((setting) => execRolldown("src/j-formally.js", setting)));

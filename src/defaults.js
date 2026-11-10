@@ -3,27 +3,27 @@
  *
  * @example
  * <form
- *  data-valid-class="is-valid"              Any string that qualifies for a class (no spaces)
- *  data-invalid-class="is-invalid"          Any string that qualifies for a class (no spaces)
- *  data-invalid-indicator="true"            true or false
+ *  data-valid-class="is-valid"       Any string that qualifies for a class (no spaces)
+ *  data-invalid-class="is-invalid"   Any string that qualifies for a class (no spaces)
+ *  data-invalid-indicator="true"     true or false
  *
  */
 export const defaultSettings = {
-  validClass: 'is-valid',
-  invalidClass: 'is-invalid',
+  validClass: "is-valid",
+  invalidClass: "is-invalid",
   liveCheck: false,
 };
 
 export const defaultStates = [
-  'badInput',
+  "badInput",
   // 'customError',
-  'patternMismatch',
-  'rangeOverflow',
-  'rangeUnderflow',
-  'stepMismatch',
-  'tooLong',
-  'tooShort',
-  'typeMismatch',
-  'valid',
-  'valueMissing'
+  "patternMismatch",
+  "rangeOverflow",
+  "rangeUnderflow",
+  "stepMismatch",
+  "tooLong",
+  "tooShort",
+  "typeMismatch",
+  "valid",
+  "valueMissing",
 ];

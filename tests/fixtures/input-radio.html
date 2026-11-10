@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Radio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta2/css/bootstrap.min.css"
+        integrity="sha512-aqT9YD5gLuLBr6ipQAS+72o5yHKzgZbGxEh6iY8lW/r6gG14e2kBTAJb8XrxzZrMOGSmDqtLaF76T0Z6YY2IHg=="
+        crossorigin="anonymous" />
+    <style>
+        body {
+            padding: 4rem
+        }
+    </style>
+</head>
+
+<body>
+    <section class=wrapper>
+        <form class="validate" id="radio-form">
+
+            <div class="mb-3">
+                <label for="color-red">Color</label>
+                <div>
+                    <input type="radio" name="color" id="color-red" value="red" required>
+                    <label for="color-red">Red</label>
+                </div>
+                <div>
+                    <input type="radio" name="color" id="color-blue" value="blue">
+                    <label for="color-blue">Blue</label>
+                </div>
+                <div>
+                    <input type="radio" name="color" id="color-green" value="green">
+                    <label for="color-green">Green</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-group">
+                    <button type=submit class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </section>
+
+    <script src="/dist/form-validator.esm.min.js" type="module"></script>
+</body>
+
+</html>
