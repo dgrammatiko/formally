@@ -1,23 +1,26 @@
 import { afterAll, beforeEach, beforeAll, describe, expect, it, test } from 'vitest';
-import { preview } from 'vite';
+import { startServer } from './static-server.js';
 import puppeteer from 'puppeteer';
 
 let server
 let browser
 let page
+let port
 
 describe('NUMBER: Pattern missmatch, Invalid form check [isValid]', () => {
   beforeAll(async () => {
-    server = await preview({ preview: { port: 5432 } })
+    const { server: srv, port: p } = await startServer()
+    server = srv
+    port = p
     browser = await puppeteer.launch()
     page = await browser.newPage()
     await page.setViewport({ width: 600, height: 400 });
-    await page.goto(`http://localhost:5432/tests/fixtures/input-number.html`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`http://localhost:${port}/tests/fixtures/input-number.html`, { waitUntil: 'domcontentloaded' });
   })
 
   afterAll(async () => {
     await browser.close()
-    await new Promise((resolve, reject) => server.httpServer.close(error => error ? reject(error) : resolve()))
+    await new Promise((resolve) => server.close(resolve))
   })
 
   it('Form should not have a novalidate attribute', async () => {

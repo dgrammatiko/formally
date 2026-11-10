@@ -1,5 +1,5 @@
-import { debounce } from './utils.js';
-import { defaultSettings, defaultStates } from './defaults.js';
+import { debounce } from "./utils.js";
+import { defaultSettings, defaultStates } from "./defaults.js";
 /**
  * The Class defaults, can be overriden through data-*
  *
@@ -12,13 +12,14 @@ import { defaultSettings, defaultStates } from './defaults.js';
  */
 class Formally {
   /**
-  * Constructor
-  *
-  * @param {HTMLFormElement} form
-  */
+   * Constructor
+   *
+   * @param {HTMLFormElement} form
+   */
   constructor(form) {
-    if (!form || form.constructor.name !== 'HTMLFormElement') throw new Error('Validator needs a form element');
-    if (form.hasAttribute('novalidate')) return;
+    if (!form || form.constructor.name !== "HTMLFormElement")
+      throw new Error("Validator needs a form element");
+    if (form.hasAttribute("novalidate")) return;
 
     this.form = form;
     this.elementsForValidation = [];
@@ -34,20 +35,25 @@ class Formally {
     this.options = {
       validClass: dataSet.validClass ? dataSet.validClass : defaultSettings.validClass,
       invalidClass: dataSet.invalidClass ? dataSet.invalidClass : defaultSettings.invalidClass,
-      liveCheck: dataSet.liveCheck && dataSet.liveCheck === 'true' ? true : defaultSettings.liveCheck,
+      liveCheck:
+        dataSet.liveCheck && dataSet.liveCheck === "true" ? true : defaultSettings.liveCheck,
     };
 
     // Valid elements: form.elements (+ Web Components implementing elementInternals)
-    Array.from(this.form.elements).forEach((formElement) => this.modifyElement(formElement, 'add'));
+    Array.from(this.form.elements).forEach((formElement) => this.modifyElement(formElement, "add"));
 
     // Callback function to execute when mutations are observed
     const mutationCallback = (mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length > 0) {
-          Array.from(this.form.elements).filter((element) => !this.elementsForValidation.includes(element)).forEach((element) => this.modifyElement(element, 'add'));
+          Array.from(this.form.elements)
+            .filter((element) => !this.elementsForValidation.includes(element))
+            .forEach((element) => this.modifyElement(element, "add"));
         }
         if (mutation.removedNodes.length > 0) {
-          this.elementsForValidation.filter((element) => !Array.from(this.form.elements).includes(element)).forEach((element) => this.modifyElement(element, 'remove'));
+          this.elementsForValidation
+            .filter((element) => !Array.from(this.form.elements).includes(element))
+            .forEach((element) => this.modifyElement(element, "remove"));
         }
       });
     };
@@ -57,7 +63,7 @@ class Formally {
     this.observer = new MutationObserver(mutationCallback);
 
     // Start observing the target node for configured mutations
-    this.observer.observe(this.form, {attributes: false, childList: true, subtree: true});
+    this.observer.observe(this.form, { attributes: false, childList: true, subtree: true });
   }
 
   /**
@@ -68,10 +74,10 @@ class Formally {
    */
   validateFormElement(event) {
     if (!event || !event.target || event.target.form !== this.form) {
-      throw new Error('The element needs to be a children of a form element');
+      throw new Error("The element needs to be a children of a form element");
     }
 
-    event.target.setCustomValidity('');
+    event.target.setCustomValidity("");
     event.target.checkValidity();
     this.notify(event.target, event.target.validity.valid);
   }
@@ -100,7 +106,7 @@ class Formally {
    * Setting a data-custom-error will render the field ALWAYS invalid!!!!
    */
   getCustomMessage(input, type) {
-    let customMessage = '';
+    let customMessage = "";
     if (!input || !type) return customMessage;
     const data = input.dataset;
     if (!data) return customMessage;
@@ -119,14 +125,32 @@ class Formally {
    * @param {nodeElement} formElement the element
    * Valid elements: form.elements (+ Web Components implementing elementInternals)
    */
-  modifyElement(formElement, action = 'add') {
-    if (formElement.hasAttribute('disabled') || !formElement.willValidate || formElement.tagName === 'FIELDSET' || formElement.tagName === 'OUTPUT') return;
+  modifyElement(formElement, action = "add") {
+    if (action === "remove") {
+      this.elementsForValidation = this.elementsForValidation.filter((el) => el !== formElement);
+      formElement.removeEventListener("blur", this.validateFormElement);
+      formElement.removeEventListener("change", this.validateFormElement);
+      if (this.options.liveCheck) {
+        formElement.removeEventListener("input", this.debounced);
+      }
+      return;
+    }
 
-    this.elementsForValidation.push(formElement);
-    formElement[`${action}EventListener`]('blur', this.validateFormElement, { passive: true });
-    formElement[`${action}EventListener`]('change', this.validateFormElement, { passive: true });
+    if (
+      formElement.hasAttribute("disabled") ||
+      !formElement.willValidate ||
+      formElement.tagName === "FIELDSET" ||
+      formElement.tagName === "OUTPUT"
+    )
+      return;
+
+    if (!this.elementsForValidation.includes(formElement)) {
+      this.elementsForValidation.push(formElement);
+    }
+    formElement.addEventListener("blur", this.validateFormElement, { passive: true });
+    formElement.addEventListener("change", this.validateFormElement, { passive: true });
     if (this.options.liveCheck) {
-      formElement[`${action}EventListener`]('input', this.debounced, { passive: true });
+      formElement.addEventListener("input", this.debounced, { passive: true });
     }
   }
 
@@ -134,7 +158,9 @@ class Formally {
    * Method that will dispose the validator
    */
   dispose() {
-    Array.from(this.form.elements).forEach((formElement) => this.modifyElement(formElement, 'remove'));
+    Array.from(this.form.elements).forEach((formElement) =>
+      this.modifyElement(formElement, "remove"),
+    );
 
     this.observer.disconnect();
     this.observer = null;
@@ -157,16 +183,18 @@ class Formally {
    * Method to control the notification (invalid state messages)
    */
   notify(formElement, isValid) {
-    if (formElement.hasAttribute('disabled')) return;
+    if (formElement.hasAttribute("disabled")) return;
 
-    const type = formElement.getAttribute('type');
+    const type = formElement.getAttribute("type");
     // Replace the UA default message
-    formElement.setCustomValidity(this.getCustomMessage(formElement, formElement.type));
+    formElement.setCustomValidity(this.getCustomMessage(formElement, type));
     this.switchClasses(formElement, isValid);
 
     // Radios need a bit more
-    if (type && type === 'radio') {
-      this.elementsForValidation.filter(el => el.name !== formElement.name).forEach((el) => this.switchClasses(el, isValid));
+    if (type && type === "radio") {
+      this.elementsForValidation
+        .filter((el) => el.name === formElement.name)
+        .forEach((el) => this.switchClasses(el, isValid));
     }
 
     formElement.reportValidity();
@@ -178,7 +206,7 @@ class Formally {
   isValid() {
     let firstInvalid;
     this.elementsForValidation.forEach((formElement) => {
-      formElement.setCustomValidity('');
+      formElement.setCustomValidity("");
       const valid = formElement.checkValidity();
       this.notify(formElement, valid);
       if (!firstInvalid && !valid) {

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JFormally Test</title>
+    <style>
+        body {
+            padding: 4rem
+        }
+    </style>
+</head>
+
+<body>
+    <section class=wrapper>
+        <form class="form-validate" id="jform">
+
+            <div class="mb-3">
+                <label for="username">Username</label>
+                <input type="text" class="form-control required validate-username" id="username"
+                    data-validation-text="Invalid username">
+            </div>
+
+            <div class="mb-3">
+                <label for="password">Password</label>
+                <input type="password" class="form-control required validate-password" id="password"
+                    data-validation-text="Invalid password">
+            </div>
+
+            <div class="mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control required validate-email" id="email"
+                    data-validation-text="Invalid email">
+            </div>
+
+            <div class="mb-3">
+                <label for="numeric">Numeric</label>
+                <input type="text" class="form-control validate-numeric" id="numeric"
+                    data-validation-text="Invalid number">
+            </div>
+
+            <div class="mb-3">
+                <label for="pattern">Pattern</label>
+                <input type="text" class="form-control required" id="pattern" pattern="^[a-z]{3,10}$"
+                    data-validation-text="Pattern mismatch">
+            </div>
+
+            <div class="mb-3">
+                <label for="agree">Agree</label>
+                <input type="checkbox" class="form-control required" id="agree">
+            </div>
+
+            <div class="mb-3">
+                <label for="select">Select</label>
+                <select class="form-control required" id="select">
+                    <option value="">Choose</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="disabled">Disabled</label>
+                <input type="text" class="form-control required" id="disabled" disabled>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-group">
+                    <button type=submit class="btn btn-primary validate" id="submit-btn">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </section>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "punycode": "/tests/punycode-browser.mjs"
+            }
+        }
+    </script>
+
+    <script>
+        window.Joomla = {
+            sanitizeHtml: (html) => html,
+            Text: {
+                _: (key) => key,
+            },
+            renderMessages: (error) => {
+                window.__joomla_messages = error;
+            },
+        };
+    </script>
+
+    <script type="module">
+        import { JFormally } from '/dist/j-formally.esm.min.js';
+        window.JFormally = JFormally;
+    </script>
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, beforeAll, describe, expect, it, test } from 'vitest';
-import { preview } from 'vite';
+import { startServer } from './static-server.js';
 import puppeteer from 'puppeteer';
 
 import { defaultSettings } from '../src/defaults.js'
@@ -8,23 +8,27 @@ describe('Input text', () => {
   let server
   let browser
   let page
+  let port
 
   beforeAll(async () => {
-    server = await preview({ preview: { port: 5432 } })
+    const { server: srv, port: p } = await startServer()
+    server = srv
+    port = p
     browser = await puppeteer.launch()
     page = await browser.newPage()
   })
 
   afterAll(async () => {
     await browser.close()
-    await new Promise((resolve, reject) => server.httpServer.close(error => error ? reject(error) : resolve()))
+    await new Promise((resolve) => server.close(resolve))
   })
 
   describe('TEXT: Pattern Missmatch, Invalid form check [isValid]', () => {
     beforeEach(async () => {
         page = await browser.newPage()
-        await page.goto(`http://localhost:5432/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
+        await page.goto(`http://localhost:${port}/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
         await page.waitForSelector('form');
+        await page.waitForFunction(() => typeof window.Formally !== 'undefined');
     });
 
     it('Form should not have a novalidate attribute', async () => {
@@ -73,7 +77,7 @@ describe('Input text', () => {
 
 describe('TEXT: Required, Invalid form check [isValid]', () => {
     beforeAll(async () => {
-      await page.goto(`http://localhost:5432/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:${port}/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
     }, 10000);
 
     it('Form should not have a novalidate attribute', async () => {
@@ -122,7 +126,7 @@ describe('TEXT: Required, Invalid form check [isValid]', () => {
 
 describe('TEXT: Too Long, Invalid form check [isValid]', () => {
     beforeAll(async () => {
-        await page.goto(`http://localhost:5432/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
+        await page.goto(`http://localhost:${port}/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
     }, 10000);
 
     it('Form should not have a novalidate attribute', async () => {
@@ -173,7 +177,7 @@ describe('TEXT: Too Long, Invalid form check [isValid]', () => {
   describe('TEXT: Too short, Invalid form check [isValid]', () => {
     beforeAll(async () => {
 
-      await page.goto(`http://localhost:5432/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:${port}/tests/fixtures/input-text.html`, { waitUntil: 'domcontentloaded' });
     }, 10000);
 
     it('Form should not have a novalidate attribute', async () => {

@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, beforeAll, describe, expect, it, test } from 'vitest';
-import { preview } from 'vite';
+import { startServer } from './static-server.js';
 import puppeteer from 'puppeteer';
 
 import { defaultSettings } from '../src/defaults.js'
@@ -22,22 +22,26 @@ describe('Form', () => {
   let server
   let browser
   let page
+  let port
 
   beforeAll(async () => {
-    server = await preview({ preview: { port: 5432 } })
+    const { server: srv, port: p } = await startServer()
+    server = srv
+    port = p
     browser = await puppeteer.launch()
     page = await browser.newPage()
   })
 
   afterAll(async () => {
     await browser.close()
-    await new Promise((resolve, reject) => server.httpServer.close(error => error ? reject(error) : resolve()))
+    await new Promise((resolve) => server.close(resolve))
   })
 
   describe('Form No validate', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5432/tests/fixtures/form-no-validate.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:${port}/tests/fixtures/form-no-validate.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
+      await page.waitForFunction(() => typeof window.Formally !== 'undefined');
     });
 
     it('Form should have a no validate', async () => {
@@ -59,8 +63,9 @@ describe('Form', () => {
 
   describe('Form Validate, default options', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5432/tests/fixtures/form-validate-1.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:${port}/tests/fixtures/form-validate-1.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
+      await page.waitForFunction(() => typeof window.Formally !== 'undefined');
     });
 
       it('Form should not have a novalidate attribute', async () => {
@@ -97,8 +102,9 @@ describe('Form', () => {
 
   describe('Form Validate, options from data attributes', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5432/tests/fixtures/form-validate-2.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:${port}/tests/fixtures/form-validate-2.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
+      await page.waitForFunction(() => typeof window.Formally !== 'undefined');
     });
 
     it('Form should not have a novalidate attribute', async () => {
@@ -135,8 +141,9 @@ describe('Form', () => {
 
    describe('Form Validate, Valid form check [isValid]', () => {
     beforeEach(async () => {
-      await page.goto(`http://localhost:5432/tests/fixtures/form-validate-3.html`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`http://localhost:${port}/tests/fixtures/form-validate-3.html`, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector('form');
+      await page.waitForFunction(() => typeof window.Formally !== 'undefined');
     });
 
     it('Form should not have a novalidate attribute', async () => {
