@@ -55,10 +55,10 @@ Forms with class `validate` (and without `novalidate`) are auto-initialized when
 
 <form class="validate" data-live-check="true">
   <label for="email">Email</label>
-  <input type="email" name="email" required>
+  <input type="email" name="email" required />
 
   <label for="password">Password</label>
-  <input type="password" name="password" required minlength="8">
+  <input type="password" name="password" required minlength="8" />
 
   <button type="submit">Submit</button>
 </form>
@@ -87,18 +87,20 @@ Forms with class `validate` (and without `novalidate`) are auto-initialized when
 
 Options are read from `data-*` attributes on the `<form>` element:
 
-| Attribute | Default | Description |
-|-----------|---------|-------------|
-| `data-valid-class` | `is-valid` | CSS class added to valid fields |
-| `data-invalid-class` | `is-invalid` | CSS class added to invalid fields |
-| `data-live-check` | `false` | Set `"true"` to validate on every keystroke |
-| `novalidate` | — | If present, Formally skips the form entirely |
+| Attribute            | Default      | Description                                  |
+| -------------------- | ------------ | -------------------------------------------- |
+| `data-valid-class`   | `is-valid`   | CSS class added to valid fields              |
+| `data-invalid-class` | `is-invalid` | CSS class added to invalid fields            |
+| `data-live-check`    | `false`      | Set `"true"` to validate on every keystroke  |
+| `novalidate`         | —            | If present, Formally skips the form entirely |
 
 ```html
-<form class="validate"
-      data-valid-class="is-valid"
-      data-invalid-class="is-invalid"
-      data-live-check="true">
+<form
+  class="validate"
+  data-valid-class="is-valid"
+  data-invalid-class="is-invalid"
+  data-live-check="true"
+>
   ...
 </form>
 ```
@@ -107,26 +109,28 @@ Options are read from `data-*` attributes on the `<form>` element:
 
 Formally relies on standard HTML5 validation attributes (`required`, `min`, `max`, `minlength`, `maxlength`, `pattern`, `type`, `step`). Custom error messages are supplied via `data-*` attributes matching the validity state:
 
-| Data attribute | Validity state | Triggered when |
-|----------------|----------------|----------------|
-| `data-value-missing` | `valueMissing` | Field is empty but `required` |
-| `data-type-mismatch` | `typeMismatch` | `type="email"`/`"url"` value is malformed |
-| `data-pattern-mismatch` | `patternMismatch` | Value doesn't match `pattern` |
-| `data-too-long` | `tooLong` | Value exceeds `maxlength` |
-| `data-too-short` | `tooShort` | Value is below `minlength` |
-| `data-range-underflow` | `rangeUnderflow` | Value below `min` |
-| `data-range-overflow` | `rangeOverflow` | Value above `max` |
-| `data-step-mismatch` | `stepMismatch` | Value doesn't fit `step` |
-| `data-bad-input` | `badInput` | Value can't be converted (e.g. non-numeric in `type="number"`) |
+| Data attribute          | Validity state    | Triggered when                                                 |
+| ----------------------- | ----------------- | -------------------------------------------------------------- |
+| `data-value-missing`    | `valueMissing`    | Field is empty but `required`                                  |
+| `data-type-mismatch`    | `typeMismatch`    | `type="email"`/`"url"` value is malformed                      |
+| `data-pattern-mismatch` | `patternMismatch` | Value doesn't match `pattern`                                  |
+| `data-too-long`         | `tooLong`         | Value exceeds `maxlength`                                      |
+| `data-too-short`        | `tooShort`        | Value is below `minlength`                                     |
+| `data-range-underflow`  | `rangeUnderflow`  | Value below `min`                                              |
+| `data-range-overflow`   | `rangeOverflow`   | Value above `max`                                              |
+| `data-step-mismatch`    | `stepMismatch`    | Value doesn't fit `step`                                       |
+| `data-bad-input`        | `badInput`        | Value can't be converted (e.g. non-numeric in `type="number"`) |
 
 The browser's default validation UI (`reportValidity`) is used to display the message.
 
 ```html
-<input type="email"
-       name="email"
-       required
-       data-value-missing="Please enter your email"
-       data-type-mismatch="That doesn't look like a valid email">
+<input
+  type="email"
+  name="email"
+  required
+  data-value-missing="Please enter your email"
+  data-type-mismatch="That doesn't look like a valid email"
+/>
 ```
 
 ## API
@@ -167,9 +171,9 @@ Formally uses a `MutationObserver` to watch the form. Fields added to the form a
 </script>
 
 <form id="jform" class="form-validate">
-  <input type="text" name="username" class="required validate-username" required>
-  <input type="password" name="password" class="required validate-password" required>
-  <input type="email" name="email" class="required validate-email" required>
+  <input type="text" name="username" class="required validate-username" required />
+  <input type="password" name="password" class="required validate-password" required />
+  <input type="email" name="email" class="required validate-email" required />
   <button type="submit" class="validate">Submit</button>
 </form>
 
@@ -179,7 +183,7 @@ Formally uses a `MutationObserver` to watch the form. Fields added to the form a
 
   // Add a custom validator
   jf.custom = {
-    alwaysFail: { exec: () => false }
+    alwaysFail: { exec: () => false },
   };
 </script>
 ```
